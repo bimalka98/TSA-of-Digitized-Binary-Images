@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{article}%,twocolumn
+\documentclass[a4paper,11pt]{book}%,twocolumn
 %\documentclass[a4paper,11pt]{article}
 \input{settings/packages}
 \input{settings/page}
@@ -9,7 +9,7 @@
 	
 \input{content/title_page}
 \tableofcontents
-\pagebreak
+
 
 
 
@@ -18,14 +18,23 @@
 %	\centering
 %	\includegraphics[scale=0.45]{figures/macllc}
 %	\caption{10BASE-T relationship to the ISO/IEC Open Systems Interconnection (OSI) reference model and the IEEE 802.3 CSMA/CD LAN model\cite{main}}
-%\end{figure}
-
+%\end{figure
+\chapter{Feasibility Study}
 \section{Introduction}
 Most of the robotic arms used in industrial environments operate in a pre-programmed cycle. When it comes to the way a human does the same task is much different as the path planning for picking an object may change from cycle to cycle because of the perception obtained through human vision.\\ 
 
-Machine vision is the technology and methods incorporated to mimic the human vision in order to gain the insights about the operating environment of the robotics system. However, when it comes to the real time, object detection using machine vision, there is an inevitable trade-off between the accuracy and the speed of the operation. This depends entirely on the used machine vision algorithms and the computational power of the used hardware.
+Machine vision is the technology and methods incorporated to mimic the human vision in order to gain the insights about the operating environment of the robotics system. However, when it comes to the real time object detection using machine vision, there is an inevitable trade-off between the accuracy and the speed of the operation. This depends entirely on the used machine vision algorithms and the computational power of the available hardware.
 
-\section{Feasibility Study}
+\section{Challenges Encountered when Incorporating  a Vision Unit to a Robotic System}
+
+If the robotic system/ arm in interest is not controlled through a dedicated industrial PC with adequate computational resources, the amount of resources that can be allocated to the vision unit becomes limited.  This will eventually result in great delays (which is not desirable when it comes to real time operations) to produce the required outputs by processing the acquired images through the associated camera.\\
+
+Due to this limitation in computational resources it is not practical to use Deep Learning based algorithms in time critical industrial applications.
+
+\section{Traditional Machine Vision Approach as the Solution}
+
+
+
 %\bibliographystyle{plain}
 %\bibliography{refer}
 
