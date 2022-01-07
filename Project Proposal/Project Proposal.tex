@@ -1,12 +1,12 @@
-\documentclass[a4paper,11pt]{book}%,twocolumn
+\documentclass[a4paper,12pt]{book}%,twocolumn
 %\documentclass[a4paper,11pt]{article}
 \input{settings/packages}
 \input{settings/page}
 \input{settings/macros}
-
+\usepackage{algpseudocode}
 
 \begin{document}
-	
+
 \input{content/title_page}
 \tableofcontents
 
@@ -21,7 +21,7 @@
 %\end{figure
 \chapter{Feasibility Study}
 \section{Introduction}
-Most of the robotic arms used in industrial environments operate in a pre-programmed cycle. When it comes to the way a human does the same task is much different as the path planning for picking an object may change from cycle to cycle because of the perception obtained through human vision.\\ 
+Most of the robotic arms used in industrial environments operate in a pre-programmed cycle. When it comes to the way a human does the same task is much different as the path planning for picking an object may change from cycle to cycle because of the perception obtained through human vision.\\
 
 Machine vision is the technology and methods incorporated to mimic the human vision in order to gain the insights about the operating environment of the robotics system. However, when it comes to the real time object detection using machine vision, there is an inevitable trade-off between the accuracy and the speed of the operation. This depends entirely on the used machine vision algorithms and the computational power of the available hardware.
 
@@ -33,9 +33,43 @@ Due to this limitation in computational resources it is not practical to use Dee
 
 \section{A Traditional Machine Vision Approach as the Solution}
 
-To overcome the challenges mentioned above traditional machine vision algorithms can be incorporated inside the vision unit. Unlike the deep learning based algorithms, traditional machine vision algorithms  are less computationally expensive and no initial data is require to train the algorithm. As they are build upon strong mathematical foundation which is therefore work well in almost all the situations when the parameters are tuned properly.ww
+To overcome the challenges mentioned above traditional machine vision algorithms can be incorporated inside the vision unit. Unlike the deep learning based algorithms, traditional machine vision algorithms  are less computationally expensive and no initial data is require to train the algorithm. As they are build upon strong mathematical foundation which is therefore work well in almost all the situations when the parameters are tuned properly.
 
+\section{High Level Representation of the Algorithm}
 
+For real time trajectory generation we first need to track the objects on the conveyor belt. A typical object tracking framework generally consists of three major modules which can be identified as, 1. Object Detection, 2. Object Modeling and 3. Object Tracking. The following traditional computer vision methods will be used to implement those three modules.\\
+
+\begin{table}[!h]
+	\centering
+	\begin{tabular}[!h]{|l | l|}
+		\hline
+		\textbf{Module} & \textbf{Method}\\
+		\hline
+		Object Detection &  Background Subtraction and Connected Component Analysis\\
+		Object Modeling & Contour Representation\\
+		Object Tracking & Template Matching followed by Object moments interpretation\\ 
+		\hline\hline
+	\end{tabular}
+\caption{Modules of a Typical Object Tracking Framework}
+\end{table}
+	
+%Pseudo code representation of the functioning of above three modules cane be expressed as follows.
+%
+%
+%\begin{verbatim}
+%1. Capture an image of a sample object placed on the conveyor belt
+%2. Create the `template image' using that image
+%3. While True
+%4. 	Capture a frame
+%5. 	Convert the frame to a grayscale image
+%6. 	Thresholding the image for segmentation
+%7. 	Connected compponent Analysis
+%8. 	Background Subtraction
+%9. 	Contour Analysis to identify the object Contorurs
+%10. Template matching 
+%\end{verbatim}
+
+Through the above framework we can identify and track the centroids of the objects on the conveyor belt and that information cam be handed over to the trajectory generation algorithm to generate the required path in the real time  to pick the object.
 %\bibliographystyle{plain}
 %\bibliography{refer}
 
