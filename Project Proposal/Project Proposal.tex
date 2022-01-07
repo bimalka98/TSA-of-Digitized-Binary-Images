@@ -30,7 +30,7 @@ Machine vision is the technology and methods incorporated to mimic the human vis
 If the robotic system/ arm in interest is not controlled through a dedicated industrial PC with adequate computational resources, the amount of resources that can be allocated to the vision unit becomes limited.  This will eventually result in great delays (which is not desirable when it comes to real time operations) to produce the required outputs by processing the acquired images through the associated camera.\\
 
 Due to this limitation in computational resources it is not practical to use Deep Learning based algorithms in time critical industrial applications. Because, by the time the decisions are made the environment may have already changed and the made decisions may no longer valid.
-
+\pagebreak
 \section{A Traditional Machine Vision Approach as the Solution}
 
 To overcome the challenges mentioned above traditional machine vision algorithms can be incorporated inside the vision unit. Unlike the deep learning based algorithms, traditional machine vision algorithms  are less computationally expensive and no initial data is require to train the algorithm. As they are build upon strong mathematical foundation which is therefore work well in almost all the situations when the parameters are tuned properly.
@@ -46,7 +46,7 @@ For real time trajectory generation we first need to track the objects on the co
 		\textbf{Module} & \textbf{Method}\\
 		\hline
 		Object Detection &  Background Subtraction and Connected Component Analysis\\
-		Object Modeling & Contour Representation\\
+		Object Modeling & Contour Analysis and Representation\\
 		Object Tracking & Template Matching followed by Object moments interpretation\\ 
 		\hline\hline
 	\end{tabular}
