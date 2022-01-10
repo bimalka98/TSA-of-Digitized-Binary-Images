@@ -4,7 +4,7 @@
 \input{settings/page}
 \input{settings/macros}
 \usepackage{algpseudocode}
-
+\usepackage{float}
 \begin{document}
 
 \input{content/title_page}
@@ -13,12 +13,6 @@
 
 
 
-
-%\begin{figure}[!h]
-%	\centering
-%	\includegraphics[scale=0.45]{figures/macllc}
-%	\caption{10BASE-T relationship to the ISO/IEC Open Systems Interconnection (OSI) reference model and the IEEE 802.3 CSMA/CD LAN model\cite{main}}
-%\end{figure
 \chapter{Feasibility Study}
 \section{Introduction}
 Most of the robotic arms used in industrial environments operate in a pre-programmed cycle. When it comes to the way a human does the same task is much different as the path planning for picking an object may change from cycle to cycle because of the perception obtained through human vision.\\
@@ -33,7 +27,7 @@ Due to this limitation in computational resources it is not practical to use Dee
 \pagebreak
 \section{A Traditional Machine Vision Approach as the Solution}
 
-To overcome the challenges mentioned above traditional machine vision algorithms can be incorporated inside the vision unit. Unlike the deep learning based algorithms, traditional machine vision algorithms  are less computationally expensive and no initial data is require to train the algorithm. As they are build upon strong mathematical foundation which is therefore work well in almost all the situations when the parameters are tuned properly.
+To overcome the challenges mentioned above traditional machine vision algorithms can be incorporated inside the vision unit. Unlike the deep learning based algorithms, traditional machine vision algorithms  are less computationally expensive and no initial data is require to train the algorithm. As they are build upon strong mathematical foundation they work well in almost all the situations when the parameters are tuned properly.
 
 \section{High Level Representation of the Algorithm}
 
@@ -45,7 +39,7 @@ For real time trajectory generation we first need to track the objects on the co
 		\hline
 		\textbf{Module} & \textbf{Method}\\
 		\hline
-		Object Detection &  Background Subtraction and Connected Component Analysis\\
+		Object Detection &  Connected Component Analysis and Background Subtraction\\
 		Object Modeling & Contour Analysis and Representation\\
 		Object Tracking & Template Matching followed by Object moments interpretation\\ 
 		\hline\hline
@@ -69,7 +63,50 @@ For real time trajectory generation we first need to track the objects on the co
 %10. Template matching 
 %\end{verbatim}
 
-Through the above framework we can identify and track the centroids of the objects on the conveyor belt and that information cam be handed over to the trajectory generation algorithm to generate the required path in the real time  to pick the object.
+Through the above framework we can identify and track the centroids of the objects on the conveyor belt and that information cam be handed over to the trajectory generation algorithm to generate the required path in the real time  to pick the object. Following subsections highlights the contribution from the each module tabled above where a conveyor belt which carries hexagonal nuts is used as the example.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.17]{figures/belt}
+	\caption{Single frame of the video captured from the camera}
+\end{figure}
+
+
+\subsection{Object Detection: Connected Component Analysis (CCA) and Background Subtraction}
+
+As the first step of the object detection and tracking, the foreground (objects) must be separated from the background. This segmentation is done at this stage  using \textit{connected component analysis} (CCA). Through the CCA different connected objects found in the image can be assigned different labels. Those label information can then be used to subtract the background from the  image. Prior to CCA, thresholding followed by a suitable morphological transformation must be done. For this example \textit{Otsu's thresholding} and \textit{morphological closing} are used.
+
+\begin{figure}[H]
+	\centering
+	\subfigure[Labeling of connected objects using CCA]
+	{ \includegraphics[scale=0.65]{figures/cca}
+	}\hspace{5mm}
+	\subfigure[Subtracting the background]
+	{ \includegraphics[scale=0.65]{figures/backsub}
+	}
+\caption{Connected Component Analysis (CCA) and Background Subtraction}
+\end{figure}
+
+\subsection{Object Modeling: Contour Analysis and Representation}
+
+Background subtracted image is used in this stage to find contours. These contours can be then used as a representation of the objects on the conveyor belt.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.65]{figures/contours}
+	\caption{Finding contours in the image}
+\end{figure}
+
+\subsection{Object Tracking: Template Matching followed by Object moments interpretation}
+
+In order to identify different objects a procedure called as \textit{template matching} is carried out. For this template matching, reference images known as template images should be created using a properly captured images of the objects that are intended to convey using the conveyor belt. Contours of these templates can be compared with the object contours found in the previous stage to identify similar objects for further processing. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{figures/template}
+	\caption{Sample template image for a conveyor belt carrying hexagonal nuts}
+\end{figure}
+
 %\bibliographystyle{plain}
 %\bibliography{refer}
 
