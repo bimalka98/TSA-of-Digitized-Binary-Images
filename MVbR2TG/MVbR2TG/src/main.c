@@ -7,13 +7,10 @@ Last Modified: 2022/01/13
 // including libraries and dependancies
 #include <stdio.h>
 #include <stdlib.h>
+
+// user defined libraries
 #include "../libs/utilities/utilities.h"
 #include "../libs/tsa/tsa.h"
-
-// #define STB_IMAGE_IMPLEMENTATION
-// #include "../libs/public/stb_image.h"
-// #define STB_IMAGE_WRITE_IMPLEMENTATION
-// #include "../libs/public/stb_image_write.h"
 
 
 /*
@@ -26,9 +23,7 @@ Function Arguments      : Start with simple letters, combine with simple letters
 
 // global variable declarations
 
-#define IMG_WIDTH  12
-#define IMG_HEIGHT 6
-
+// sample binary image for contour detection
 int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
