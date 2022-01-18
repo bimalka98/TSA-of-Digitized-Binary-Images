@@ -21,6 +21,9 @@
     <ClCompile Include="libs\utilities\utilities.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libs\tsa\tsa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\utilities\utilities.h">

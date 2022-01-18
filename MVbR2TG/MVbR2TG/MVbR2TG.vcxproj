@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="libs\tsa\tsa.c" />
     <ClCompile Include="libs\utilities\utilities.c" />
     <ClCompile Include="src\main.c" />
   </ItemGroup>
