@@ -33,9 +33,10 @@ struct Pixel { // Main strcuture to hold
 
 struct Node { // Node of a linked list
     struct Pixel pixel;
-    struct node* nextnode;
+    struct Node* nextnode;
+    bool _childpresent;
 };
 
 
 void printList (struct Node* headnode);
-void appendNode (struct Node* headnode, struct Node* currentnode, struct Pixel pixeldata);
+void appendNode ( struct Node* currentnode, struct Pixel pixeldata);

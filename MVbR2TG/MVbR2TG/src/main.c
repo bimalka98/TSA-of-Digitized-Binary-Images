@@ -33,21 +33,34 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+
+
+
 int main () {
     
-    int k = findContours(BinaryImage, IMG_WIDTH, IMG_HEIGHT);
-    struct HeadNode* _headnode = NULL;
-    struct CurrentNode* _currentnode = NULL;
-
+    struct Node _headnode;
+    struct Node* _currentnode = &_headnode;
     struct Pixel _pixeldata;
+
+    // values for first node
     _pixeldata._coord._x = 10;
     _pixeldata._coord._y = 20;
-    _pixeldata._binaryval = 0;
+    // append node to the list
+    appendNode (_currentnode, _pixeldata);
+    
+    // adjust pointer to the next list
+    _currentnode = _currentnode->nextnode;
 
-    printList (_headnode);
-    appendNode (_headnode, _currentnode, _pixeldata);
-    printList (_headnode);
+    // values for the next node
+    _pixeldata._coord._x = 20;
+    _pixeldata._coord._y = 30;
+
+    // append node to the list
+    appendNode ( _currentnode, _pixeldata);
+    
+    printList (&_headnode);
     
     
+
     return 0;
 }
