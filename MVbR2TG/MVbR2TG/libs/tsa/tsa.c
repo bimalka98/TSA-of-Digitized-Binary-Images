@@ -21,10 +21,10 @@ int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int i
     int _lnbd = 1; // the sequential number of the last border
     int _i2, _j2; 
     // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
-    for(int i=0; i<image_height; i++) {
+    for(int i=1; i<image_height-1; i++) {
         // Every time we begin to scan a new row of the picture, reset LNBD to 1.
         _lnbd = 1;
-        for(int j=0; j<image_width; j++) {
+        for(int j=1; j<image_width-1; j++) {
             printf ("%d\t", binary_image[i][j]);
             if ( binary_image[i][j] != 0 ) {
                 // (1) Select one of the following:
@@ -34,7 +34,7 @@ int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int i
                     //increment NBD, and (i2, j2) <- (i, j - 1).
                     _nbd++;
                     _i2 = i; _j2 = j - 1;
-                    //printf ("(%d, %d) is the starting point of an outer border\n", i, j);
+
                 } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
                     // then decide that the pixel (i, j) is the border following 
                     // starting point of a hole border, 
@@ -45,7 +45,7 @@ int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int i
                     if ( binary_image[i][j] > 1 ) {
                         _lnbd = binary_image[i][j];
                     }
-                    //printf ("(%d, %d) is the starting point of a hole border\n", i, j);
+                    
                 } else {
                     // (c) Otherwise, go to (4).
                     //printf ("Else clause\n");

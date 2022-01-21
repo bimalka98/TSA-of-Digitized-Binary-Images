@@ -24,9 +24,15 @@
     <ClCompile Include="libs\tsa\tsa.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libs\dsa\dsa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\utilities\utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\dsa\dsa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
