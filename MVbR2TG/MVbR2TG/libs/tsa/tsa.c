@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author: Bimalka Piyaruwan 
 Date Created: 2022/01/18
-Last Modified: 2022/01/18
+Last Modified: 2022/01/25
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -22,10 +22,11 @@ int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int i
     int _i2, _j2; 
     // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
     for(int i=1; i<image_height-1; i++) {
+        
         // Every time we begin to scan a new row of the picture, reset LNBD to 1.
         _lnbd = 1;
         for(int j=1; j<image_width-1; j++) {
-            printf ("%d\t", binary_image[i][j]);
+            
             if ( binary_image[i][j] != 0 ) {
                 // (1) Select one of the following:
                 if ( binary_image[i][j] == 1 && binary_image[i][j - 1] == 0 ) {
@@ -48,7 +49,11 @@ int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int i
                     
                 } else {
                     // (c) Otherwise, go to (4).
-                    //printf ("Else clause\n");
+                    // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
+                    // (i, j + 1).The algorithm terminates when the scan reaches the lower right corner of the picture.
+                    if ( binary_image[i][j] != 1 ) {
+                        _lnbd = abs (binary_image[i][j]);
+                    }
                 }
                 // (2) Depending on the types of 
                 // 1. the newly found border and 
