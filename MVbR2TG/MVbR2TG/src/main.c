@@ -60,7 +60,7 @@ int main () {
     //
     //printList (&_headnode);
     
-    printf ("\nInitializing...");
+    
     struct Node* _headnode = NULL;
     struct Node* _currentnode = _headnode;
     struct Pixel _pixeldata;
@@ -69,15 +69,20 @@ int main () {
     _pixeldata._coord._x = 10;
     _pixeldata._coord._y = 20;
 
-    // append node to the list
+    printf ("\nInitializing...");
     printf ("\nHead: %p", ( void* ) _headnode);
     printf ("\nCurrent: %p", ( void* ) _currentnode);
     printLinkedList (_headnode);
+
+    // append node to the list
+    printf ("\nAppending a node...");
     appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
     printf ("\nHead: %p", ( void* ) _headnode);
     printf ("\nCurrent: %p", ( void* ) _currentnode);
     printLinkedList (_headnode);
 
+    // append node to the list
+    printf ("\nAppending a node...");
     _pixeldata._coord._x = 9;
     _pixeldata._coord._y = 2;
     appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
@@ -85,6 +90,8 @@ int main () {
     printf ("\nCurrent: %p", ( void* ) _currentnode);
     printLinkedList (_headnode);
 
+    // append node to the list
+    printf ("\nAppending a node...");
     _pixeldata._coord._x = 15;
     _pixeldata._coord._y = 25;
     appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);

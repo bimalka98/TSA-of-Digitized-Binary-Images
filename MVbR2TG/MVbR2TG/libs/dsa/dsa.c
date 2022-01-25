@@ -58,8 +58,8 @@ void appendNodeToLinkedList (struct Node** headnode, struct Node** currentnode, 
     
     // making the link between newly created node and the previous node   
     (*currentnode) = _node;
-    printf ("\nHead: %p", ( void* ) (*headnode));
-    printf ("\nCurrent: %p", ( void* ) (*currentnode));
+    printf ("\nHead in function: %p", ( void* ) (*headnode));
+    printf ("\nCurrent in function: %p", ( void* ) (*currentnode));
 }
 
 void printLinkedList (struct Node* headnode) {
@@ -74,7 +74,7 @@ void printLinkedList (struct Node* headnode) {
     // node count
     int count = 0;
 
-    while ( _tempnode->nextnode != NULL ) {
+    while ( _tempnode != NULL ) {
         printf ("\nNode %d pixel coordinate:- (%d, %d)", count,
                 _tempnode->pixel._coord._x,
                 _tempnode->pixel._coord._y);
