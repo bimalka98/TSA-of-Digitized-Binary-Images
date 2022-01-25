@@ -2,12 +2,16 @@
 /*
 Author: Bimalka Piyaruwan
 Date Created: 2022/01/13
-Last Modified: 2022/01/21
+Last Modified: 2022/01/25
 */
 
 #include "dsa.h"
 
-// 1. Linked Lists
+/*
+* #################################
+* ##      1. Linked Lists        ##
+* #################################
+*/
 
 // fucntion to display the linked list
 void printList (struct Node* headnode) {
@@ -31,7 +35,6 @@ void appendNode ( struct Node* currentnode, struct Pixel pixeldata) {
 
     // add new pixel data to the data field, pixel
     currentnode->pixel = pixeldata;
-
     currentnode->_childpresent = 1;
 
     // update the pointer
@@ -52,26 +55,29 @@ void appendNodeToLinkedList (struct Node** headnode, struct Node** currentnode, 
 
     // check whether the linked list is empty at the moment of fucntion call
     if ( (*headnode) == NULL ) {
-        (*headnode) = _node; // if list is empty make newly created node the head.
+        // if list is empty make newly created node the head.
+        (*headnode) = _node; 
     } else 	{
+        // if the list is not empty make connection between current node and newly created node
         (*currentnode)->nextnode = _node;
     }
     
     // point the currnt node pointer to the newly ce\reated node   
     (*currentnode) = _node;
-    printf ("\nHead in function: %p", ( void* ) (*headnode));
-    printf ("\nCurrent in function: %p", ( void* ) (*currentnode));
 }
 
 void printLinkedList (struct Node* headnode) {
+    
+    // if the headnode is null that means there is no node in the list.
     if ( headnode == NULL ) {
         printf ("\nLinked List is empty!");
         return;
     }
     
-    // creating a local variable pointer to keep the pointer
+    // creating a local variable to keep the pointer
     struct Node* _tempnode = headnode;
     
+    // printing the linked list's elements if it is not empty
     printf ("\n{");
     while ( _tempnode != NULL ) {
         printf ("(%d, %d), ", _tempnode->pixel._coord._x, _tempnode->pixel._coord._y);

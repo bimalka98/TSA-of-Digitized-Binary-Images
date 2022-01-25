@@ -1,7 +1,7 @@
 /*
 Author: Bimalka Piyaruwan
 Date Created: 2022/01/13
-Last Modified: 2022/01/21
+Last Modified: 2022/01/25
 */
 
 #pragma once
@@ -31,6 +31,13 @@ struct Pixel { // Main strcuture to hold
     bool _binaryval;
 };
 
+
+/*
+* #################################
+* ##      1. Linked Lists        ##
+* #################################
+*/
+
 struct Node { // Node of a linked list
     struct Pixel pixel;
     struct Node* nextnode;
@@ -38,8 +45,10 @@ struct Node { // Node of a linked list
 };
 
 
+
 void printList (struct Node* headnode);
 void appendNode ( struct Node* currentnode, struct Pixel pixeldata);
+
 
 void appendNodeToLinkedList (struct Node** headnode, struct Node** currentnode, struct Pixel pixeldata);
 void printLinkedList (struct Node* headnode);
