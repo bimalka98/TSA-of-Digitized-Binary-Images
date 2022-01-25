@@ -38,29 +38,59 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 
 int main () {
     
-    struct Node _headnode;
-    struct Node* _currentnode = &_headnode;
-    struct Pixel _pixeldata;
+    //struct Node _headnode;
+    //struct Node* _currentnode = &_headnode;
+    //struct Pixel _pixeldata;
 
+    //// values for first node
+    //_pixeldata._coord._x = 10;
+    //_pixeldata._coord._y = 20;
+    //// append node to the list
+    //appendNode (_currentnode, _pixeldata);
+    //
+    //// adjust pointer to the next list
+    //_currentnode = _currentnode->nextnode;
+
+    //// values for the next node
+    //_pixeldata._coord._x = 20;
+    //_pixeldata._coord._y = 30;
+
+    //// append node to the list
+    //appendNode ( _currentnode, _pixeldata);
+    //
+    //printList (&_headnode);
+    
+    printf ("\nInitializing...");
+    struct Node* _headnode = NULL;
+    struct Node* _currentnode = _headnode;
+    struct Pixel _pixeldata;
+    
     // values for first node
     _pixeldata._coord._x = 10;
     _pixeldata._coord._y = 20;
-    // append node to the list
-    appendNode (_currentnode, _pixeldata);
-    
-    // adjust pointer to the next list
-    _currentnode = _currentnode->nextnode;
-
-    // values for the next node
-    _pixeldata._coord._x = 20;
-    _pixeldata._coord._y = 30;
 
     // append node to the list
-    appendNode ( _currentnode, _pixeldata);
-    
-    printList (&_headnode);
-    
-    
+    printf ("\nHead: %p", ( void* ) _headnode);
+    printf ("\nCurrent: %p", ( void* ) _currentnode);
+    printLinkedList (_headnode);
+    appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
+    printf ("\nHead: %p", ( void* ) _headnode);
+    printf ("\nCurrent: %p", ( void* ) _currentnode);
+    printLinkedList (_headnode);
+
+    _pixeldata._coord._x = 9;
+    _pixeldata._coord._y = 2;
+    appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
+    printf ("\nHead: %p", ( void* ) _headnode);
+    printf ("\nCurrent: %p", ( void* ) _currentnode);
+    printLinkedList (_headnode);
+
+    _pixeldata._coord._x = 15;
+    _pixeldata._coord._y = 25;
+    appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
+    printf ("\nHead: %p", ( void* ) _headnode);
+    printf ("\nCurrent: %p", ( void* ) _currentnode);
+    printLinkedList (_headnode);
 
     return 0;
 }

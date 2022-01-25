@@ -40,3 +40,6 @@ struct Node { // Node of a linked list
 
 void printList (struct Node* headnode);
 void appendNode ( struct Node* currentnode, struct Pixel pixeldata);
+
+void appendNodeToLinkedList (struct Node* headnode, struct Node* currentnode, struct Pixel pixeldata);
+void printLinkedList (struct Node* headnode);
