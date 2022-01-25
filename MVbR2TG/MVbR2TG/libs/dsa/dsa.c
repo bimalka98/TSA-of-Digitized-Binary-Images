@@ -38,7 +38,9 @@ void appendNode ( struct Node* currentnode, struct Pixel pixeldata) {
     currentnode->nextnode = _node;
 }
 
+// latest implementation of the append fucntion
 void appendNodeToLinkedList (struct Node** headnode, struct Node** currentnode, struct Pixel pixeldata) {
+    
     // create a node in the heap
     struct Node* _node = ( struct Node* ) malloc (sizeof (struct Node));
     
@@ -48,15 +50,14 @@ void appendNodeToLinkedList (struct Node** headnode, struct Node** currentnode, 
     // add data to the pixel data field of the node
     _node->pixel = pixeldata;
 
-    
+    // check whether the linked list is empty at the moment of fucntion call
     if ( (*headnode) == NULL ) {
-        (*headnode) = _node;
-        ( *headnode )->nextnode = NULL;
+        (*headnode) = _node; // if list is empty make newly created node the head.
     } else 	{
         (*currentnode)->nextnode = _node;
     }
     
-    // making the link between newly created node and the previous node   
+    // point the currnt node pointer to the newly ce\reated node   
     (*currentnode) = _node;
     printf ("\nHead in function: %p", ( void* ) (*headnode));
     printf ("\nCurrent in function: %p", ( void* ) (*currentnode));
@@ -71,14 +72,10 @@ void printLinkedList (struct Node* headnode) {
     // creating a local variable pointer to keep the pointer
     struct Node* _tempnode = headnode;
     
-    // node count
-    int count = 0;
-
+    printf ("\n{");
     while ( _tempnode != NULL ) {
-        printf ("\nNode %d pixel coordinate:- (%d, %d)", count,
-                _tempnode->pixel._coord._x,
-                _tempnode->pixel._coord._y);
+        printf ("(%d, %d), ", _tempnode->pixel._coord._x, _tempnode->pixel._coord._y);
         _tempnode = _tempnode->nextnode;
-        count++;
     }
+    printf ("\b\b}");
 }
