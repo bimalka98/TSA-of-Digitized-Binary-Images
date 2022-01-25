@@ -11,7 +11,11 @@ Last Modified: 2022/01/25
 #include <stdlib.h>
 #include <stdbool.h>
 
-// Data structures to hold parameters of a pixel in an image
+/*
+* #################################
+* ##      Data structures        ##
+* #################################
+*/
 
 struct RGB { // Red, Green, Blue intensities of a pixel 
     char _r; // char holds 1 byte
@@ -29,6 +33,7 @@ struct Pixel { // Main strcuture to hold
     struct RGB _rgb;
     short _pixelintensity;
     bool _binaryval;
+    char _label; // label to be assigned to a pixel depending on the border it is on.
 };
 
 
@@ -42,6 +47,7 @@ struct Node { // Node of a linked list
     struct Pixel pixel;
     struct Node* nextnode;
     bool _childpresent;
+    
 };
 
 

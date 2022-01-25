@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../dsa/dsa.h"
 
 // defining parameters of the image
 #define IMG_HEIGHT 6

@@ -3,9 +3,9 @@ Paper Implementation:
 "Topological Structural Analysis of Digitized Binary Images by Border Following"
 by SATOSHI SUZUKI AND KEIICHI ABE
 
-Author: Bimalka Piyaruwan 
-Date Created: 2022/01/18
-Last Modified: 2022/01/25
+Author          : Bimalka Piyaruwan 
+Date Created    : 2022/01/18
+Last Modified   : 2022/01/25
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -14,39 +14,48 @@ topological structural analysis of binary images, when a sequential digital comp
 // ALGORITHM 1
 #include "tsa.h"
 
-int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
+
+int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
+    
     printf ("Calling findContours function...\n");
     // Set initially NBD to 1
     int _nbd  = 1; // the sequential number of the current border
     int _lnbd = 1; // the sequential number of the last border
-    int _i2, _j2; 
+    struct Coordinate _ij;      // local variable to keep the current pixel
+    struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border 
+    
     // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
-    for(int i=1; i<image_height-1; i++) {
-        
+    for ( int i = 1; i < image_height - 1; i++ ) {
+
         // Every time we begin to scan a new row of the picture, reset LNBD to 1.
         _lnbd = 1;
-        for(int j=1; j<image_width-1; j++) {
-            
+
+        for ( int j = 1; j < image_width - 1; j++ ) {
+
             if ( binary_image[i][j] != 0 ) {
+
                 // (1) Select one of the following:
                 if ( binary_image[i][j] == 1 && binary_image[i][j - 1] == 0 ) {
                     // then decide that the pixel (i, j) is the border following 
                     // starting point of an outer border, 
                     //increment NBD, and (i2, j2) <- (i, j - 1).
                     _nbd++;
-                    _i2 = i; _j2 = j - 1;
+                    _i2j2._x = i;
+                    _i2j2._y = j - 1;
 
                 } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
                     // then decide that the pixel (i, j) is the border following 
                     // starting point of a hole border, 
                     // increment NBD, and (i2, j2) <- (i, j + 1).                   
                     _nbd++;
-                    _i2 = i; _j2 = j + 1;
+                    _i2j2._x = i;
+                    _i2j2._y = j + 1;
+
                     // and LNBD <- fij in case fij > 1.
                     if ( binary_image[i][j] > 1 ) {
                         _lnbd = binary_image[i][j];
                     }
-                    
+
                 } else {
                     // (c) Otherwise, go to (4).
                     // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
@@ -62,9 +71,26 @@ int findContours(int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int i
 
                 // (3) From the starting point (i, j), follow the detected border: 
                 // this is done by the following substeps (3.1) through (3.5).
-            }            
+            }
         }
-        printf ("\n");
     }
+}
+
+// algorithm to follow a detected border
+struct Node* followBorder (struct Coordinate ij, struct Coordinate i2j2) { 
+    struct Node* _headnode = NULL;
+    struct Node* _currentnode = _headnode;
+    struct Pixel _pixeldata;
+
+    return _headnode;
+}
+
+struct Coordinate findFirstNonZeroPixel (struct Coordinate ij, struct Coordinate i2j2) {
+    /*
+    (3.1) Starting from (i2, j2), look around clockwise the pixels in the neighborhood
+    of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
+    pixel. If no nonzero pixel is found, assign -NBD to fij and go to (4).
+    */
+    
 }
 
