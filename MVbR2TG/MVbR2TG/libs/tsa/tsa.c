@@ -95,7 +95,7 @@ struct Coordinate findFirstNonZeroPixel (
             struct Coordinate ij,
             struct Coordinate i2j2, 
             int binaryimage[IMG_HEIGHT][IMG_WIDTH],
-            int nbd) {
+            bool cloclwise) {
     /*
     (3.1) Starting from (i2, j2), look around clockwise the pixels in the neighborhood
     of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
@@ -125,15 +125,31 @@ struct Coordinate findFirstNonZeroPixel (
 
     // traversing moore neighbour pixels starting from the
     int _i, _j;
-    for ( int i = 0; i < 8; i++ ) {
-        _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
-        _j = ij._y + _neighbors[( int ) ( _initialdirection + i ) % 8]._y;
-        if ( binaryimage[_i][_j] != 0 ) {
-            _nonzeropixel._x = _i;
-            _nonzeropixel._y = _j;
-            break;
+    // Clock wise Traverse
+    if ( cloclwise ) {
+        for ( int i = 0; i < 8; i++ ) {
+            _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
+            _j = ij._y + _neighbors[( int ) ( _initialdirection + i ) % 8]._y;
+            if ( binaryimage[_i][_j] != 0 ) {
+                _nonzeropixel._x = _i;
+                _nonzeropixel._y = _j;
+                break;
+            }
+        }
+    // Counter Clock wise Traverse
+    } else 	{
+        for ( int i = 0; i < 8; i++ ) {
+            // Additional +8 was added to handle non poitive cases when considering the modulo division
+            _i = ij._x + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._x;
+            _j = ij._y + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._y;
+            if ( binaryimage[_i][_j] != 0 ) {
+                _nonzeropixel._x = _i;
+                _nonzeropixel._y = _j;
+                break;
+            }
         }
     }
+    
     return _nonzeropixel;
 }
 
@@ -146,8 +162,14 @@ struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int bi
     struct Node* _currentnode = _headnode;
     struct Pixel _pixeldata;
 
+    // add the starting pixel of the detected border
+    _pixeldata._coord._x = ij._x;
+    _pixeldata._coord._y = ij._y;
+
+    appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
+
     // 3.1 Let (i1, j1) be the first found nonzero pixel.
-    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, nbd);
+    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true);
    
     // If no nonzero pixel is found, assign - NBD to fij and go to (4).
     if ( _i1j1._x == -1 || _i1j1._y == -1 ) {
@@ -156,11 +178,8 @@ struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int bi
         return;
     } else {
         // (3.2): (i2, j2) <= (i1, j1) and (i3, j3) <= (i, j).
-        i2j2->_x = _i1j1._x;
-        i2j2->_y = _i1j1._y;
-
-        int _i3 = ij._x;
-        int _j3 = ij._y;
+        ( *i2j2 ) = _i1j1;
+        struct Coordinate _i3j3 = ij;
 
         /*
         (3.3) Starting from the next element of the pixel (i2, j2)
@@ -168,6 +187,9 @@ struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int bi
         the pixels in the neighborhood of the current pixel (i3, j3) 
         to find a nonzero pixel and let the first one be (i4, j4).
         */
+        // when clounterclockwise traverse make the last argument false in the below function
+        struct Coordinate _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false);
+
     }
 
 

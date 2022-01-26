@@ -41,4 +41,4 @@ struct Coordinate findFirstNonZeroPixel (
             struct Coordinate ij,
             struct Coordinate i2j2, 
             int binaryimage[IMG_HEIGHT][IMG_WIDTH],
-            int nbd);
+            bool cloclwise);

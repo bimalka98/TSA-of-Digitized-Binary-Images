@@ -43,8 +43,12 @@ int main () {
 
     //struct Coordinate fnzpixel = findFirstNonZeroPixel(_ij, _i2j2, BinaryImage, 1);
     enum Direction dirr = EAST;
-    struct Coordinate fnzp = findFirstNonZeroPixel (_ij, _i2j2, BinaryImage, 1);
-    printf ("\nFirst Non Zero pixel: (%d, %d)", fnzp._x, fnzp._y);
+    struct Coordinate fnzp = findFirstNonZeroPixel (_ij, _i2j2, BinaryImage, true);
+    printf ("\nFirst Non Zero pixel CW: (%d, %d)", fnzp._x, fnzp._y);
+
+
+    fnzp = findFirstNonZeroPixel (_ij, _i2j2, BinaryImage, false);
+    printf ("\nFirst Non Zero pixel CCW: (%d, %d)", fnzp._x, fnzp._y);
 
     return 0;
 }
