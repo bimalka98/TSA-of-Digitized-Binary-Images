@@ -1,3 +1,16 @@
+/*
+Paper Implementation:
+"Topological Structural Analysis of Digitized Binary Images by Border Following"
+by SATOSHI SUZUKI AND KEIICHI ABE
+
+Author          : Bimalka Piyaruwan 
+Date Created    : 2022/01/18
+Last Modified   : 2022/01/26
+
+Algorithms can be effectively used in component counting, shrinking, and 
+topological structural analysis of binary images, when a sequential digital computer is used.
+*/
+
 #pragma once
 
 #include <stdio.h>
@@ -8,6 +21,24 @@
 #define IMG_HEIGHT 6
 #define IMG_WIDTH  12
 
-// defclaring the fucntion to find the contours of the binary image
+// type definitiions
+enum Direction{
+    NORTH,
+    NORTH_EAST,
+    EAST,
+    SOUTH_EAST,
+    SOUTH,
+    SOUTH_WEST,
+    WEST,
+    NORTH_WEST
+};
+
+// declaring the fucntion to find the contours of the binary image
 int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height);
 
+
+struct Coordinate findFirstNonZeroPixel (
+            struct Coordinate ij,
+            struct Coordinate i2j2, 
+            int binaryimage[IMG_HEIGHT][IMG_WIDTH],
+            int nbd);

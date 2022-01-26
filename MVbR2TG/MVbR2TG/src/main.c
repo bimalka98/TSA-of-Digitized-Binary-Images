@@ -9,9 +9,9 @@ Last Modified: 2022/01/25
 #include <stdlib.h>
 
 // user defined libraries
-#include "../libs/utilities/utilities.h"
-#include "../libs/tsa/tsa.h"
-#include "../libs/dsa/dsa.h"
+#include "../libs/utilities/utilities.h" // Misscelaneous functions
+#include "../libs/tsa/tsa.h" // Paper: "Topological Structural Analysis of Digitized Binary Images by Border Following"
+#include "../libs/dsa/dsa.h" // Data structures and Algorithms
 
 
 /*
@@ -35,8 +35,16 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 
 
 
-
 int main () {
     
+    // get the directions of the eight neighbours of the pixel (0,0)
+    struct Coordinate _ij = {1, 2};
+    struct Coordinate _i2j2 = {1, 1};
+
+    //struct Coordinate fnzpixel = findFirstNonZeroPixel(_ij, _i2j2, BinaryImage, 1);
+    enum Direction dirr = EAST;
+    struct Coordinate fnzp = findFirstNonZeroPixel (_ij, _i2j2, BinaryImage, 1);
+    printf ("\nFirst Non Zero pixel: (%d, %d)", fnzp._x, fnzp._y);
+
     return 0;
 }

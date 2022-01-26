@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author          : Bimalka Piyaruwan 
 Date Created    : 2022/01/18
-Last Modified   : 2022/01/25
+Last Modified   : 2022/01/26
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -14,6 +14,11 @@ topological structural analysis of binary images, when a sequential digital comp
 // ALGORITHM 1
 #include "tsa.h"
 
+/*
+* #################################
+* ##  Main Algorithm from Paper  ##
+* #################################
+*/
 
 int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
     
@@ -76,8 +81,17 @@ int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int 
     }
 }
 
+/*
+* #################################
+* ##    Supportive Algorithms    ##
+* #################################
+*/
+
+
 // algorithm to follow a detected border
 struct Node* followBorder (struct Coordinate ij, struct Coordinate i2j2) { 
+    
+    // creating a linked list to store the pixels of the following border
     struct Node* _headnode = NULL;
     struct Node* _currentnode = _headnode;
     struct Pixel _pixeldata;
@@ -85,12 +99,52 @@ struct Node* followBorder (struct Coordinate ij, struct Coordinate i2j2) {
     return _headnode;
 }
 
-struct Coordinate findFirstNonZeroPixel (struct Coordinate ij, struct Coordinate i2j2) {
+// Moore-Neighbor Tracing
+// http://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/moore.html
+
+struct Coordinate findFirstNonZeroPixel (
+            struct Coordinate ij,
+            struct Coordinate i2j2, 
+            int binaryimage[IMG_HEIGHT][IMG_WIDTH],
+            int nbd) {
     /*
     (3.1) Starting from (i2, j2), look around clockwise the pixels in the neighborhood
     of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
     pixel. If no nonzero pixel is found, assign -NBD to fij and go to (4).
     */
+      
+    enum Direction _initialdirection = WEST; // starting pixel of an outer border: default
+    if ( i2j2._y - ij._y == 1 ) _initialdirection = EAST; // starting pixel of a hole border
+
+
+    struct Coordinate _neighbors[8] = {
+        {-1,  0}, // NORTH
+        {-1, +1}, // NORTH_EAST
+        { 0, +1}, // EAST
+        {+1, +1}, // SOUTH_EAST
+        {+1,  0}, // SOUTH
+        {+1, -1}, // SOUTH_WEST
+        { 0, -1}, // WEST
+        {-1, -1}  // NORTH_WEST
+    };
+  
     
+    struct Coordinate _nonzeropixel;
+    _nonzeropixel._x = -1;
+    _nonzeropixel._y = -1;
+
+
+    // traversing moore neighbour pixels starting from the
+    int _i, _j;
+    for ( int i = 0; i < 8; i++ ) {
+        _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
+        _j = ij._y + _neighbors[( int ) ( _initialdirection + i ) % 8]._y;
+        if ( binaryimage[_i][_j] != 0 ) {
+            _nonzeropixel._x = _i;
+            _nonzeropixel._y = _j;
+            break;
+        }
+    }
+    return _nonzeropixel;
 }
 
