@@ -88,18 +88,7 @@ int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int 
 */
 
 
-// algorithm to follow a detected border
-struct Node* followBorder (struct Coordinate ij, struct Coordinate i2j2) { 
-    
-    // creating a linked list to store the pixels of the following border
-    struct Node* _headnode = NULL;
-    struct Node* _currentnode = _headnode;
-    struct Pixel _pixeldata;
-
-    return _headnode;
-}
-
-// Moore-Neighbor Tracing
+// Moore-Neighbor Tracing for 3.1 
 // http://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/moore.html
 
 struct Coordinate findFirstNonZeroPixel (
@@ -146,5 +135,42 @@ struct Coordinate findFirstNonZeroPixel (
         }
     }
     return _nonzeropixel;
+}
+
+
+// algorithm to follow a detected border
+struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int binary_image[IMG_HEIGHT][IMG_WIDTH], int nbd) {
+
+    // creating a linked list to store the pixels of the following border
+    struct Node* _headnode = NULL;
+    struct Node* _currentnode = _headnode;
+    struct Pixel _pixeldata;
+
+    // 3.1 Let (i1, j1) be the first found nonzero pixel.
+    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, nbd);
+   
+    // If no nonzero pixel is found, assign - NBD to fij and go to (4).
+    if ( _i1j1._x == -1 || _i1j1._y == -1 ) {
+        binary_image[ij._x][ij._y] = -nbd;
+        // Step (4) comes here.
+        return;
+    } else {
+        // (3.2): (i2, j2) <= (i1, j1) and (i3, j3) <= (i, j).
+        i2j2->_x = _i1j1._x;
+        i2j2->_y = _i1j1._y;
+
+        int _i3 = ij._x;
+        int _j3 = ij._y;
+
+        /*
+        (3.3) Starting from the next element of the pixel (i2, j2)
+        in the counterclockwise order, examine counterclockwise 
+        the pixels in the neighborhood of the current pixel (i3, j3) 
+        to find a nonzero pixel and let the first one be (i4, j4).
+        */
+    }
+
+
+    return _headnode;
 }
 
