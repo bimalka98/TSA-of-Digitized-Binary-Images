@@ -129,14 +129,14 @@ struct Node* followBorder (
         }
 
     } else {
-        printf ("Nonzero pixel is found!");
+        printf ("\nNonzero pixel is found!");
 
         // (3.2): (i2, j2) <= (i1, j1) and (i3, j3) <= (i, j).
         ( *i2j2 ) = _i1j1;
         struct Coordinate _i3j3 = ij;
         struct Coordinate _i4j4;
         enum Direction _directionofi3j3 = WEST; // required in step 3.4
-
+        printf ("\nAbout to start following border using while true loop.");
         while ( true ) 	{
             
             // appending the next pixel of the border
@@ -157,7 +157,7 @@ struct Node* followBorder (
 
             // if a  nonzero pixel is found do followings
             if ( _i4j4._x != -1 && _i4j4._y != -1 ) {
-
+                printf ("\nFound a non zero pixel in while loop.");
                 /*
                 (3.4) Change the value fi3,j3 of the pixel (i3, j3) as follows:
 
