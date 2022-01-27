@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author          : Bimalka Piyaruwan 
 Date Created    : 2022/01/18
-Last Modified   : 2022/01/26
+Last Modified   : 2022/01/27
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -34,12 +34,21 @@ enum Direction{
 };
 
 // declaring the fucntion to find the contours of the binary image
-int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height);
+int findContours (
+    int binary_image[IMG_HEIGHT][IMG_WIDTH], 
+    int image_width, 
+    int image_height);
 
 
 struct Coordinate findFirstNonZeroPixel (
-            struct Coordinate ij,
-            struct Coordinate i2j2, 
-            int binaryimage[IMG_HEIGHT][IMG_WIDTH],
-            bool cloclwise,
-            bool examined[] ); // array is required only when traversing CCW at 3.4
+    struct Coordinate ij,
+    struct Coordinate i2j2, 
+    int binaryimage[IMG_HEIGHT][IMG_WIDTH],
+    bool cloclwise,
+    bool examined[] ); // array is required only when traversing CCW(Counter Clock Wise) at step 3.4
+
+struct Node* followBorder (
+    struct Coordinate ij,
+    struct Coordinate* i2j2,
+    int binary_image[IMG_HEIGHT][IMG_WIDTH],
+    int nbd);

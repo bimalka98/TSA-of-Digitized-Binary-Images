@@ -16,73 +16,6 @@ topological structural analysis of binary images, when a sequential digital comp
 
 /*
 * #################################
-* ##  Main Algorithm from Paper  ##
-* #################################
-*/
-
-int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
-    
-    printf ("Calling findContours function...\n");
-    // Set initially NBD to 1
-    int _nbd  = 1; // the sequential number of the current border
-    int _lnbd = 1; // the sequential number of the last border
-    struct Coordinate _ij;      // local variable to keep the current pixel
-    struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border 
-    
-    // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
-    for ( int i = 1; i < image_height - 1; i++ ) {
-
-        // Every time we begin to scan a new row of the picture, reset LNBD to 1.
-        _lnbd = 1;
-
-        for ( int j = 1; j < image_width - 1; j++ ) {
-
-            if ( binary_image[i][j] != 0 ) {
-
-                // (1) Select one of the following:
-                if ( binary_image[i][j] == 1 && binary_image[i][j - 1] == 0 ) {
-                    // then decide that the pixel (i, j) is the border following 
-                    // starting point of an outer border, 
-                    //increment NBD, and (i2, j2) <- (i, j - 1).
-                    _nbd++;
-                    _i2j2._x = i;
-                    _i2j2._y = j - 1;
-
-                } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
-                    // then decide that the pixel (i, j) is the border following 
-                    // starting point of a hole border, 
-                    // increment NBD, and (i2, j2) <- (i, j + 1).                   
-                    _nbd++;
-                    _i2j2._x = i;
-                    _i2j2._y = j + 1;
-
-                    // and LNBD <- fij in case fij > 1.
-                    if ( binary_image[i][j] > 1 ) {
-                        _lnbd = binary_image[i][j];
-                    }
-
-                } else {
-                    // (c) Otherwise, go to (4).
-                    // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
-                    // (i, j + 1).The algorithm terminates when the scan reaches the lower right corner of the picture.
-                    if ( binary_image[i][j] != 1 ) {
-                        _lnbd = abs (binary_image[i][j]);
-                    }
-                }
-                // (2) Depending on the types of 
-                // 1. the newly found border and 
-                // 2. the border with the sequential number LNBD (i.e., the last border met on the current row), 
-                // decide the parent of the current border as shown in Table 1.
-
-                // (3) From the starting point (i, j), follow the detected border: 
-                // this is done by the following substeps (3.1) through (3.5).
-            }
-        }
-    }
-}
-
-/*
-* #################################
 * ##    Supportive Algorithms    ##
 * #################################
 */
@@ -162,9 +95,11 @@ struct Coordinate findFirstNonZeroPixel (
 
 
 // algorithm to follow a detected border
-struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int binary_image[IMG_HEIGHT][IMG_WIDTH], int nbd) {
+struct Node* followBorder (
+    struct Coordinate ij, struct Coordinate* i2j2, 
+    int binary_image[IMG_HEIGHT][IMG_WIDTH], int nbd) {
 
-    // creating a linked list to store the pixels of the following border
+    // creating a linked list to store the pixels of the currently following border
     struct Node* _headnode = NULL;
     struct Node* _currentnode = _headnode;
     struct Pixel _pixeldata;
@@ -236,3 +171,83 @@ struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int bi
     return _headnode;
 }
 
+
+/*
+* #################################
+* ##  Main Algorithm from Paper  ##
+* #################################
+*/
+
+int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
+
+    printf ("Calling findContours function...\n");
+    // Set initially NBD to 1
+    int _nbd = 1; // the sequential number of the current border
+    int _lnbd = 1; // the sequential number of the last border
+    struct Coordinate _ij;      // local variable to keep the current pixel
+    struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border
+    
+    bool _outerborder = false;
+    bool _holeborder = false;
+
+
+    // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
+    for ( int i = 1; i < image_height - 1; i++ ) {
+
+        // Every time we begin to scan a new row of the picture, reset LNBD to 1.
+        _lnbd = 1;
+
+        for ( int j = 1; j < image_width - 1; j++ ) {
+
+            if ( binary_image[i][j] != 0 ) {
+
+                // (1) Select one of the following:
+                if ( binary_image[i][j] == 1 && binary_image[i][j - 1] == 0 ) {
+                    // then decide that the pixel (i, j) is the border following 
+                    // starting point of an outer border,
+                    _outerborder = true;
+                    //increment NBD, and (i2, j2) <- (i, j - 1).
+                    _nbd++;
+                    _i2j2._x = i;
+                    _i2j2._y = j - 1;
+
+                } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
+                    // then decide that the pixel (i, j) is the border following 
+                    // starting point of a hole border, 
+                    _holeborder = true;
+                    // increment NBD, and (i2, j2) <- (i, j + 1).                   
+                    _nbd++;
+                    _i2j2._x = i;
+                    _i2j2._y = j + 1;
+
+                    // and LNBD <- fij in case fij > 1.
+                    if ( binary_image[i][j] > 1 ) {
+                        _lnbd = binary_image[i][j];
+                    }
+
+                } else {
+                    // (c) Otherwise, go to (4).
+                    // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
+                    // (i, j + 1).The algorithm terminates when the scan reaches the lower right corner of the picture.
+                    if ( binary_image[i][j] != 1 ) {
+                        _lnbd = abs (binary_image[i][j]);
+                    }
+                }
+                // (2) Depending on the types of 
+                // 1. the newly found border and 
+                // 2. the border with the sequential number LNBD (i.e., the last border met on the current row), 
+                // decide the parent of the current border as shown in Table 1.
+
+                // (3) From the starting point (i, j), follow the detected border: 
+                // this is done by the following substeps (3.1) through (3.5).
+                
+                
+                if ( _outerborder || _holeborder ) {
+                    // DEFINING NEW HEAD FOR THE NEWILY FOUND BORDER
+                    struct Node* contour = NULL; 
+                }
+                
+            }
+        }
+    }
+}
