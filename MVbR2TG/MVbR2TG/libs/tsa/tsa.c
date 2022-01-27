@@ -178,17 +178,20 @@ struct Node* followBorder (
 * #################################
 */
 
-int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
-
+struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
+    
     printf ("Calling findContours function...\n");
+
+    // Declaring a root node to hold the Topological Structure in side a tree data structure.
+    struct Node* _root = NULL;
+    
     // Set initially NBD to 1
     int _nbd = 1; // the sequential number of the current border
     int _lnbd = 1; // the sequential number of the last border
     struct Coordinate _ij;      // local variable to keep the current pixel
     struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border
     
-    bool _outerborder = false;
-    bool _holeborder = false;
+    
 
 
     // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
@@ -200,6 +203,9 @@ int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int 
         for ( int j = 1; j < image_width - 1; j++ ) {
 
             if ( binary_image[i][j] != 0 ) {
+
+                bool _outerborder = false;
+                bool _holeborder = false;
 
                 // (1) Select one of the following:
                 if ( binary_image[i][j] == 1 && binary_image[i][j - 1] == 0 ) {
@@ -243,11 +249,18 @@ int findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int 
                 
                 
                 if ( _outerborder || _holeborder ) {
+                    _ij._x = i;
+                    _ij._y = j;
+
                     // DEFINING NEW HEAD FOR THE NEWILY FOUND BORDER
-                    struct Node* contour = NULL; 
+                    struct Node* _contour = NULL;
+                    _contour = followBorder (_ij, &_i2j2, binary_image, _nbd);
+                    _root = _contour;
+
                 }
                 
             }
         }
     }
+    return _root;
 }

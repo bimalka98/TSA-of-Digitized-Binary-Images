@@ -37,7 +37,7 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 
 
 int main () {
-    
+    /*
     // get the directions of the eight neighbours of the pixel (0,0)
     struct Coordinate _ij = {1, 2};
     struct Coordinate _i2j2 = {1, 1};
@@ -54,8 +54,10 @@ int main () {
     printf ("\nFirst Non Zero pixel CCW: (%d, %d)", fnzp._x, fnzp._y);
 
     for ( int i = 0; i < 8; i++ ) printf ("\nDirection %d: Visited %d", i, _examined[i]);
+    */
 
-
+    struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
+    printLinkedList (contours);
     
     return 0;
 }
