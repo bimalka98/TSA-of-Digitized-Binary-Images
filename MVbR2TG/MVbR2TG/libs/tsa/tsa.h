@@ -41,4 +41,5 @@ struct Coordinate findFirstNonZeroPixel (
             struct Coordinate ij,
             struct Coordinate i2j2, 
             int binaryimage[IMG_HEIGHT][IMG_WIDTH],
-            bool cloclwise);
+            bool cloclwise,
+            bool examined[] ); // array is required only when traversing CCW at 3.4

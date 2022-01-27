@@ -95,7 +95,8 @@ struct Coordinate findFirstNonZeroPixel (
             struct Coordinate ij,
             struct Coordinate i2j2, 
             int binaryimage[IMG_HEIGHT][IMG_WIDTH],
-            bool cloclwise) {
+            bool cloclwise,
+            bool examined[]) {
     /*
     (3.1) Starting from (i2, j2), look around clockwise the pixels in the neighborhood
     of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
@@ -128,8 +129,10 @@ struct Coordinate findFirstNonZeroPixel (
     // Clock wise Traverse
     if ( cloclwise ) {
         for ( int i = 0; i < 8; i++ ) {
+
             _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
             _j = ij._y + _neighbors[( int ) ( _initialdirection + i ) % 8]._y;
+
             if ( binaryimage[_i][_j] != 0 ) {
                 _nonzeropixel._x = _i;
                 _nonzeropixel._y = _j;
@@ -142,6 +145,10 @@ struct Coordinate findFirstNonZeroPixel (
             // Additional +8 was added to handle non poitive cases when considering the modulo division
             _i = ij._x + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._x;
             _j = ij._y + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._y;
+            
+            // mark the pixel as en examined pixel
+            examined[( int ) ( _initialdirection - i + 8 ) % 8] = 1;
+
             if ( binaryimage[_i][_j] != 0 ) {
                 _nonzeropixel._x = _i;
                 _nonzeropixel._y = _j;
@@ -162,37 +169,70 @@ struct Node* followBorder (struct Coordinate ij, struct Coordinate* i2j2, int bi
     struct Node* _currentnode = _headnode;
     struct Pixel _pixeldata;
 
-    // add the starting pixel of the detected border
-    _pixeldata._coord._x = ij._x;
-    _pixeldata._coord._y = ij._y;
-
-    appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
-
     // 3.1 Let (i1, j1) be the first found nonzero pixel.
-    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true);
+    bool _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true, _examined);
    
-    // If no nonzero pixel is found, assign - NBD to fij and go to (4).
+    // If no nonzero pixel is found, assign - NBD to fij and go to (4). // lonely pixel
     if ( _i1j1._x == -1 || _i1j1._y == -1 ) {
         binary_image[ij._x][ij._y] = -nbd;
-        // Step (4) comes here.
-        return;
+        
+        // appending the next pixel of the border
+        _pixeldata._coord = ij;
+        appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
+
+        // GOTO Step (4).
+        
     } else {
         // (3.2): (i2, j2) <= (i1, j1) and (i3, j3) <= (i, j).
         ( *i2j2 ) = _i1j1;
         struct Coordinate _i3j3 = ij;
+        struct Coordinate _i4j4;
+        enum Direction _directionofi3j3 = WEST; // required in step 3.4
 
+        while ( true ) 	{
+            // appending the next pixel of the border
+            _pixeldata._coord = _i3j3;
+            appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
         /*
         (3.3) Starting from the next element of the pixel (i2, j2)
-        in the counterclockwise order, examine counterclockwise 
-        the pixels in the neighborhood of the current pixel (i3, j3) 
+        in the counterclockwise order, examine counterclockwise
+        the pixels in the neighborhood of the current pixel (i3, j3)
         to find a nonzero pixel and let the first one be (i4, j4).
         */
-        // when clounterclockwise traverse make the last argument false in the below function
-        struct Coordinate _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false);
+        // when counterclockwise traverse make the last argument false in the below function
 
+            _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false, _examined);
+
+            /*
+            (3.4) Change the value fi3,j3 of the pixel (i3, j3) as follows:
+            (a) If the pixel (i3, j3 + 1)(WEST pixel) is a O-pixel examined in the substep (3.3) then fi3, j3 = - NBD.
+            (b) If the pixel (i3, j3 + 1)(WEST pixel) is not a O-pixel examined in the substep (3.3) and fi3,j3 = 1, then fi3,j3 = NBD.
+            (c) Otherwise, do not change fi3, j3.
+            */
+            // (a)
+            
+            if ( binary_image[_i3j3._x][_i3j3._y + 1] == 0 && _examined[WEST] ) {
+                binary_image[_i3j3._x][_i3j3._y] = -nbd;
+            // (b)
+            } else if ( binary_image[_i3j3._x][_i3j3._y] == 1 ) {
+                binary_image[_i3j3._x][_i3j3._y] = nbd;
+            }
+            // (c): Otherwise, do nothing
+
+            // (3.5) If (i4, j4) = (i, j) and (i3, j3) = (i1, j1) (coming back to the starting point), then go to (4);
+            if ( _i4j4._x == ij._x && _i4j4._y == ij._y ) {
+                if ( _i3j3._x == _i1j1._x && _i3j3._y == _i1j1._y ) {
+                    break;
+                    // GOTO Step (4).
+                }
+            } else {
+                // otherwise, ( i2, j2 ) = ( i3, j3 ), ( i3 , j3 ) = ( i4, j4 ), and go back to (3.3).
+                *i2j2 = _i3j3;
+                _i3j3 = _i4j4;
+            }
+        }   
     }
-
-
     return _headnode;
 }
 
