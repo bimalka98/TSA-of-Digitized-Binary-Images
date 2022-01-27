@@ -62,7 +62,7 @@ struct Coordinate findFirstNonZeroPixel (
     int _i, _j;
     // Clock wise Traverse
     if ( cloclwise ) {
-        printf ("Clockwise");
+        printf ("\nClockwise");
         for ( int i = 0; i < 8; i++ ) {
 
             _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
@@ -76,7 +76,7 @@ struct Coordinate findFirstNonZeroPixel (
         }
     // Counter Clock wise Traverse
     } else 	{
-        printf ("Counter Clockwise");
+        printf ("\nCounter Clockwise");
         for ( int i = 0; i < 8; i++ ) {
             // Additional +8 was added to handle non poitive cases when considering the modulo division
             _i = ij._x + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._x;
@@ -138,6 +138,7 @@ struct Node* followBorder (
         enum Direction _directionofi3j3 = WEST; // required in step 3.4
         printf ("\nAbout to start following border using while true loop.");
         
+        // Instead of a while true: use a counter to stop the infinite loop.
         int count = IMG_HEIGHT*IMG_WIDTH;
         //while ( true ) 	{
         while ( count >0 ) {
@@ -223,11 +224,11 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
     
     printf ("\nCalling findContours function...");
 
-    // Declaring a root node to hold the Topological Structure in side a tree data structure.
+    // Declaring a root node to hold the Topological Structure inside a tree data structure.
     struct Node* _root = NULL;
     
     // Set initially NBD to 1
-    int _nbd = 2; // the sequential number of the current border; frame gets nbd = 1
+    int _nbd = 1; // the sequential number of the current border; frame gets nbd = 1
     int _lnbd = 1; // the sequential number of the last border
     struct Coordinate _ij;      // local variable to keep the current pixel
     struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border
@@ -236,7 +237,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
 
 
     // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
-    for ( int i = 1; i < image_height - 1; i++ ) {
+    for ( int i = 0; i < image_height; i++ ) {
 
         // Every time we begin to scan a new row of the picture, reset LNBD to 1.
         _lnbd = 1;
@@ -288,8 +289,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
 
                 // (3) From the starting point (i, j), follow the detected border: 
                 // this is done by the following substeps (3.1) through (3.5).
-                
-                
+                               
                 if ( _outerborder || _holeborder ) {
                     _ij._x = i;
                     _ij._y = j;

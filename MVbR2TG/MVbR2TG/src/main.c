@@ -1,7 +1,7 @@
 /*
 Author: Bimalka Piyaruwan 
 Date Created: 2022/01/13
-Last Modified: 2022/01/25
+Last Modified: 2022/01/27
 */
 
 // including libraries and dependancies
@@ -26,7 +26,7 @@ Function Arguments      : Start with simple letters, combine with simple letters
 // global variable declarations
 
 // sample binary image for contour detection
-/*
+
 int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -34,21 +34,21 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-*/
-int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
+
+/*int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
-
+*/
 
 int main () {
 
     showImage (BinaryImage);
     struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
     showImage (BinaryImage);
-
+    
     return 0;
 }
