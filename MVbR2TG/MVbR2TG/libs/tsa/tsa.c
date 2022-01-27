@@ -30,10 +30,11 @@ struct Coordinate findFirstNonZeroPixel (
             int binaryimage[IMG_HEIGHT][IMG_WIDTH],
             bool cloclwise,
             bool examined[]) {
+    printf ("\nCalling findFirstNonZeroPixel algorithm.");
     /*
     (3.1) Starting from (i2, j2), look around clockwise the pixels in the neighborhood
     of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
-    pixel. If no nonzero pixel is found, assign -NBD to fij and go to (4).
+    pixel. If no nonzero pixel is found, assign -NBD to fij and go to (4). This is implemented inside the other fucntion.
     */
       
     enum Direction _initialdirection = WEST; // starting pixel of an outer border: default
@@ -61,6 +62,7 @@ struct Coordinate findFirstNonZeroPixel (
     int _i, _j;
     // Clock wise Traverse
     if ( cloclwise ) {
+        printf ("Clockwise");
         for ( int i = 0; i < 8; i++ ) {
 
             _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
@@ -74,6 +76,7 @@ struct Coordinate findFirstNonZeroPixel (
         }
     // Counter Clock wise Traverse
     } else 	{
+        printf ("Counter Clockwise");
         for ( int i = 0; i < 8; i++ ) {
             // Additional +8 was added to handle non poitive cases when considering the modulo division
             _i = ij._x + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._x;
@@ -97,7 +100,9 @@ struct Coordinate findFirstNonZeroPixel (
 // algorithm to follow a detected border
 struct Node* followBorder (
     struct Coordinate ij, struct Coordinate* i2j2, 
-    int binary_image[IMG_HEIGHT][IMG_WIDTH], int nbd) {
+    int binary_image[IMG_HEIGHT][IMG_WIDTH],
+    int nbd,
+    int *lnbd) {
 
     // creating a linked list to store the pixels of the currently following border
     struct Node* _headnode = NULL;
@@ -105,8 +110,9 @@ struct Node* followBorder (
     struct Pixel _pixeldata;
 
     // 3.1 Let (i1, j1) be the first found nonzero pixel.
-    bool _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true, _examined);
+    // Just passing an array of bool to fill the argument. It has nothing to do when we examine in Clock wise direction.
+    bool _fakearray[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true, _fakearray);
    
     // If no nonzero pixel is found, assign - NBD to fij and go to (4). // lonely pixel
     if ( _i1j1._x == -1 || _i1j1._y == -1 ) {
@@ -117,8 +123,14 @@ struct Node* followBorder (
         appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
 
         // GOTO Step (4).
-        
+        printf ("\nMove to step 4 from followBorder fucntion.");
+        if ( binary_image[ij._x][ij._x] != 1 ) {
+            *lnbd = abs (binary_image[ij._x][ij._x]);
+        }
+
     } else {
+        printf ("Nonzero pixel is found!");
+
         // (3.2): (i2, j2) <= (i1, j1) and (i3, j3) <= (i, j).
         ( *i2j2 ) = _i1j1;
         struct Coordinate _i3j3 = ij;
@@ -126,45 +138,70 @@ struct Node* followBorder (
         enum Direction _directionofi3j3 = WEST; // required in step 3.4
 
         while ( true ) 	{
+            
             // appending the next pixel of the border
+            printf ("Append next pixel to the list.");
             _pixeldata._coord = _i3j3;
             appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
-        /*
-        (3.3) Starting from the next element of the pixel (i2, j2)
-        in the counterclockwise order, examine counterclockwise
-        the pixels in the neighborhood of the current pixel (i3, j3)
-        to find a nonzero pixel and let the first one be (i4, j4).
-        */
-        // when counterclockwise traverse make the last argument false in the below function
+            
+            /*
+            (3.3) Starting from the next element of the pixel (i2, j2)
+            in the counterclockwise order, examine counterclockwise
+            the pixels in the neighborhood of the current pixel (i3, j3)
+            to find a nonzero pixel and let the first one be (i4, j4).
+            */
 
+            // when counterclockwise traverse make the last but one argument false in the below function
+            bool _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false, _examined);
 
-            /*
-            (3.4) Change the value fi3,j3 of the pixel (i3, j3) as follows:
-            (a) If the pixel (i3, j3 + 1)(WEST pixel) is a O-pixel examined in the substep (3.3) then fi3, j3 = - NBD.
-            (b) If the pixel (i3, j3 + 1)(WEST pixel) is not a O-pixel examined in the substep (3.3) and fi3,j3 = 1, then fi3,j3 = NBD.
-            (c) Otherwise, do not change fi3, j3.
-            */
-            // (a)
-            
-            if ( binary_image[_i3j3._x][_i3j3._y + 1] == 0 && _examined[WEST] ) {
-                binary_image[_i3j3._x][_i3j3._y] = -nbd;
-            // (b)
-            } else if ( binary_image[_i3j3._x][_i3j3._y] == 1 ) {
-                binary_image[_i3j3._x][_i3j3._y] = nbd;
-            }
-            // (c): Otherwise, do nothing
+            // if a  nonzero pixel is found do followings
+            if ( _i4j4._x != -1 && _i4j4._y != -1 ) {
 
-            // (3.5) If (i4, j4) = (i, j) and (i3, j3) = (i1, j1) (coming back to the starting point), then go to (4);
-            if ( _i4j4._x == ij._x && _i4j4._y == ij._y ) {
-                if ( _i3j3._x == _i1j1._x && _i3j3._y == _i1j1._y ) {
-                    break;
-                    // GOTO Step (4).
+                /*
+                (3.4) Change the value fi3,j3 of the pixel (i3, j3) as follows:
+
+                (a) If the pixel (i3, j3 + 1)(WEST pixel) is a O-pixel examined in the substep (3.3) then fi3, j3 = - NBD.
+                (b) If the pixel (i3, j3 + 1)(WEST pixel) is not a O-pixel examined in the substep (3.3) and fi3,j3 = 1, then fi3,j3 = NBD.
+                (c) Otherwise, do not change fi3, j3.
+                */
+
+                // (a)
+                if ( binary_image[_i3j3._x][_i3j3._y + 1] == 0 && _examined[WEST] ) {
+                    binary_image[_i3j3._x][_i3j3._y] = -nbd;
+                
+                // (b)
+                } else if ( binary_image[_i3j3._x][_i3j3._y] == 1 ) {
+                    binary_image[_i3j3._x][_i3j3._y] = nbd;
+                }
+                // (c): Otherwise, do nothing
+
+                // (3.5) If (i4, j4) = (i, j) and (i3, j3) = (i1, j1) (coming back to the starting point), then go to (4);
+                if ( _i4j4._x == ij._x && _i4j4._y == ij._y ) {
+                    if ( _i3j3._x == _i1j1._x && _i3j3._y == _i1j1._y ) {
+
+                        // GOTO Step (4).
+                        printf ("\nMove to step 4 from followBorder function.");
+                        if ( binary_image[ij._x][ij._x] != 1 ) {
+                            *lnbd = abs (binary_image[ij._x][ij._x]);
+                        }
+                        printf ("\nComing back to the starting point.");
+                        break;
+
+                    }
+                } else {
+                    // otherwise, ( i2, j2 ) = ( i3, j3 ), ( i3 , j3 ) = ( i4, j4 ), and go back to (3.3).
+                    printf ("\nUpdating pixels to find first non zero pixel");
+                    *i2j2 = _i3j3;
+                    _i3j3 = _i4j4;
                 }
             } else {
-                // otherwise, ( i2, j2 ) = ( i3, j3 ), ( i3 , j3 ) = ( i4, j4 ), and go back to (3.3).
-                *i2j2 = _i3j3;
-                _i3j3 = _i4j4;
+                // If such non zero pixel is not found 
+                // GOTO Step (4).
+                printf ("\nMove to step 4 from followBorder function.");
+                if ( binary_image[ij._x][ij._x] != 1 ) {
+                    *lnbd = abs (binary_image[ij._x][ij._x]);
+                }
             }
         }   
     }
@@ -235,6 +272,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     // (c) Otherwise, go to (4).
                     // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
                     // (i, j + 1).The algorithm terminates when the scan reaches the lower right corner of the picture.
+                    printf ("\nMove to step 4 from findContours fucntion.");
                     if ( binary_image[i][j] != 1 ) {
                         _lnbd = abs (binary_image[i][j]);
                     }
@@ -253,12 +291,11 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     _ij._y = j;
 
                     // DEFINING NEW HEAD FOR THE NEWILY FOUND BORDER
+                    printf ("\nInitializing followBorder algorithms.");
                     struct Node* _contour = NULL;
-                    _contour = followBorder (_ij, &_i2j2, binary_image, _nbd);
+                    _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
-
-                }
-                
+                }   
             }
         }
     }
