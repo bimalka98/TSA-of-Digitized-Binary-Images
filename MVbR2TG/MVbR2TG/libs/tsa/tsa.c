@@ -137,10 +137,13 @@ struct Node* followBorder (
         struct Coordinate _i4j4;
         enum Direction _directionofi3j3 = WEST; // required in step 3.4
         printf ("\nAbout to start following border using while true loop.");
-        while ( true ) 	{
+        
+        int count = IMG_HEIGHT*IMG_WIDTH;
+        //while ( true ) 	{
+        while ( count >0 ) {
             
             // appending the next pixel of the border
-            printf ("Append next pixel to the list.");
+            printf ("\nAppend next pixel to the list.");
             _pixeldata._coord = _i3j3;
             appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
             
@@ -203,6 +206,7 @@ struct Node* followBorder (
                     *lnbd = abs (binary_image[ij._x][ij._x]);
                 }
             }
+            count--;
         }   
     }
     return _headnode;
@@ -223,7 +227,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
     struct Node* _root = NULL;
     
     // Set initially NBD to 1
-    int _nbd = 1; // the sequential number of the current border
+    int _nbd = 2; // the sequential number of the current border; frame gets nbd = 1
     int _lnbd = 1; // the sequential number of the last border
     struct Coordinate _ij;      // local variable to keep the current pixel
     struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border
@@ -295,6 +299,8 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     struct Node* _contour = NULL;
                     _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
+                    printLinkedList (_contour);
+                    printf ("\n------------------------");
                 }   
             }
         }

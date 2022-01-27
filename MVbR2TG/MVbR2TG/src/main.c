@@ -26,14 +26,22 @@ Function Arguments      : Start with simple letters, combine with simple letters
 // global variable declarations
 
 // sample binary image for contour detection
+/*
 int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
-        {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0},
+        {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0},
         {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+*/
+int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+        {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+        {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+        {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
 
 
 int main () {
@@ -59,5 +67,13 @@ int main () {
     struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
     printLinkedList (contours);
     
+    printf ("\n\n\n");
+    for ( int i = 0; i < IMG_HEIGHT;i++ ) {
+        for ( int j = 0; j < IMG_WIDTH; j++ ) {
+            printf ("%d ", BinaryImage[i][j]);
+        }
+        printf ("\n");
+    }
+
     return 0;
 }
