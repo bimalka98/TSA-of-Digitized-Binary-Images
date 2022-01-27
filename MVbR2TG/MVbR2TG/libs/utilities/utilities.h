@@ -1,3 +1,5 @@
 #pragma once
 
-int addTwoNum (int a, int b);
+#include "../tsa/tsa.h"
+
+void showImage (int binaryimage[IMG_HEIGHT][IMG_WIDTH]);

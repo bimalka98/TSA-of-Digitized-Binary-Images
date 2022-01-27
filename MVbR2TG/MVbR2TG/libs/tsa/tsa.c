@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author          : Bimalka Piyaruwan 
 Date Created    : 2022/01/18
-Last Modified   : 2022/01/26
+Last Modified   : 2022/01/27
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -221,7 +221,7 @@ struct Node* followBorder (
 
 struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
     
-    printf ("Calling findContours function...\n");
+    printf ("\nCalling findContours function...");
 
     // Declaring a root node to hold the Topological Structure in side a tree data structure.
     struct Node* _root = NULL;
@@ -299,8 +299,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     struct Node* _contour = NULL;
                     _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
-                    printLinkedList (_contour);
-                    printf ("\n------------------------");
+                    printLinkedList (_contour);   
                 }   
             }
         }

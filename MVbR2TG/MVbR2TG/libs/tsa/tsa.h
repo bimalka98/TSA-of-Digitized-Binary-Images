@@ -51,4 +51,5 @@ struct Node* followBorder (
     struct Coordinate ij,
     struct Coordinate* i2j2,
     int binary_image[IMG_HEIGHT][IMG_WIDTH],
-    int nbd);
+    int nbd,
+    int* lnbd);

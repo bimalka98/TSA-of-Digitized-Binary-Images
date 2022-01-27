@@ -45,35 +45,10 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 
 
 int main () {
-    /*
-    // get the directions of the eight neighbours of the pixel (0,0)
-    struct Coordinate _ij = {1, 2};
-    struct Coordinate _i2j2 = {1, 1};
-    
 
-    //struct Coordinate fnzpixel = findFirstNonZeroPixel(_ij, _i2j2, BinaryImage, 1);
-    enum Direction dirr = EAST;
-    bool _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    struct Coordinate fnzp = findFirstNonZeroPixel (_ij, _i2j2, BinaryImage, true, _examined);
-    printf ("\nFirst Non Zero pixel CW: (%d, %d)", fnzp._x, fnzp._y);
-
-    
-    fnzp = findFirstNonZeroPixel (_ij, _i2j2, BinaryImage, false, _examined);
-    printf ("\nFirst Non Zero pixel CCW: (%d, %d)", fnzp._x, fnzp._y);
-
-    for ( int i = 0; i < 8; i++ ) printf ("\nDirection %d: Visited %d", i, _examined[i]);
-    */
-
+    showImage (BinaryImage);
     struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
-    printLinkedList (contours);
-    
-    printf ("\n\n\n");
-    for ( int i = 0; i < IMG_HEIGHT;i++ ) {
-        for ( int j = 0; j < IMG_WIDTH; j++ ) {
-            printf ("%d ", BinaryImage[i][j]);
-        }
-        printf ("\n");
-    }
+    showImage (BinaryImage);
 
     return 0;
 }
