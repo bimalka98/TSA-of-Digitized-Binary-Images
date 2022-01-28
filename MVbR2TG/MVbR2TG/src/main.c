@@ -25,6 +25,9 @@ Function Arguments      : Start with simple letters, combine with simple letters
 
 // global variable declarations
 
+#include <time.h>
+
+
 // sample binary image for contour detection
 /*
 int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
@@ -47,8 +50,20 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 
 int main () {
 
+    // Represent the image
     showImage (BinaryImage);
+
+    clock_t start, end;
+    double cpu_time_used;
+
+    start = clock ();
     struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
+    end = clock ();
+    
+    cpu_time_used = ( ( double ) ( end - start ) ) / CLOCKS_PER_SEC;
+    printf ("\nExecution time: %f", cpu_time_used);
+
+    // Represent the image
     showImage (BinaryImage);
     
     return 0;
