@@ -300,8 +300,8 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     _nbd++;
                     _i2j2._x = i;
                     _i2j2._y = j - 1;
-
-                } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
+                // Remove > sign from first comparison to avoid meeting holeborder critera will stuck the machine 
+                } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) { 
                     // then decide that the pixel (i, j) is the border following 
                     // starting point of a hole border, 
                     _holeborder = true;
@@ -341,7 +341,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     struct Node* _contour = NULL;
                     _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
-                    printLinkedList (_contour);   
+                    //printLinkedList (_contour);   
                 }   
             }
         }

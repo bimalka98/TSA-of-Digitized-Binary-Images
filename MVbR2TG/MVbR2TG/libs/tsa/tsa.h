@@ -18,8 +18,8 @@ topological structural analysis of binary images, when a sequential digital comp
 #include "../dsa/dsa.h"
 
 // defining parameters of the image
-#define IMG_HEIGHT 6
-#define IMG_WIDTH  12
+#define IMG_HEIGHT 512
+#define IMG_WIDTH  512
 
 // type definitiions
 enum Direction{
@@ -34,10 +34,7 @@ enum Direction{
 };
 
 // declaring the fucntion to find the contours of the binary image
-struct Node* findContours (
-    int binary_image[IMG_HEIGHT][IMG_WIDTH], 
-    int image_width, 
-    int image_height);
+struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height);
 
 struct Coordinate findFirstNonZeroPixel (
     struct Coordinate ij,
