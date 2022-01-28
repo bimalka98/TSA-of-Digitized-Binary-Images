@@ -45,7 +45,8 @@ struct Coordinate findFirstNonZeroPixel (
     struct Coordinate i2j2, 
     int binaryimage[IMG_HEIGHT][IMG_WIDTH],
     bool cloclwise,
-    bool examined[] ); // array is required only when traversing CCW(Counter Clock Wise) at step 3.4
+    bool examined[],
+    struct Coordinate mooreneighborhood[]); // array is required only when traversing CCW(Counter Clock Wise) at step 3.4
 
 struct Node* followBorder (
     struct Coordinate ij,

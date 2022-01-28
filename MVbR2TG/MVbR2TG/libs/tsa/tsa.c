@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author          : Bimalka Piyaruwan 
 Date Created    : 2022/01/18
-Last Modified   : 2022/01/27
+Last Modified   : 2022/01/28
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -13,6 +13,19 @@ topological structural analysis of binary images, when a sequential digital comp
 
 // ALGORITHM 1
 #include "tsa.h"
+
+// Global Variable Definitions
+
+struct Coordinate MooreNeighborhood[8] = {
+        {-1,  0}, // NORTH
+        {-1, +1}, // NORTH_EAST
+        { 0, +1}, // EAST
+        {+1, +1}, // SOUTH_EAST
+        {+1,  0}, // SOUTH
+        {+1, -1}, // SOUTH_WEST
+        { 0, -1}, // WEST
+        {-1, -1}  // NORTH_WEST
+};
 
 /*
 * #################################
@@ -29,44 +42,54 @@ struct Coordinate findFirstNonZeroPixel (
             struct Coordinate i2j2, 
             int binaryimage[IMG_HEIGHT][IMG_WIDTH],
             bool cloclwise,
-            bool examined[]) {
+            char examined[],
+            struct Coordinate mooreneighborhood[]) {
     printf ("\nCalling findFirstNonZeroPixel algorithm.");
+
+    struct Coordinate _nonzeropixel;
+    _nonzeropixel._x = -1;
+    _nonzeropixel._y = -1;
+
     /*
     (3.1) Starting from (i2, j2), look around clockwise the pixels in the neighborhood
     of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
     pixel. If no nonzero pixel is found, assign -NBD to fij and go to (4). This is implemented inside the other fucntion.
     */
-      
-    enum Direction _initialdirection = WEST; // starting pixel of an outer border: default
-    if ( i2j2._y - ij._y == 1 ) _initialdirection = EAST; // starting pixel of a hole border
-
-
-    struct Coordinate _neighbors[8] = {
-        {-1,  0}, // NORTH
-        {-1, +1}, // NORTH_EAST
-        { 0, +1}, // EAST
-        {+1, +1}, // SOUTH_EAST
-        {+1,  0}, // SOUTH
-        {+1, -1}, // SOUTH_WEST
-        { 0, -1}, // WEST
-        {-1, -1}  // NORTH_WEST
-    };
-  
     
-    struct Coordinate _nonzeropixel;
-    _nonzeropixel._x = -1;
-    _nonzeropixel._y = -1;
+    // find the initial direction to start the examination.
+    enum Direction _initialdirection;
+    int _deltai = i2j2._x - ij._x;
+    int _deltaj = i2j2._y - ij._y;
 
+    if(_deltai == -1 && _deltaj == 0) {
+        _initialdirection = NORTH;
+    } else if(_deltai == -1 && _deltaj == 1) {
+        _initialdirection = NORTH_EAST;
+    } else if(_deltai == 0 && _deltaj == 1) {
+        _initialdirection = EAST;
+    } else if(_deltai == 1 && _deltaj == 1) {
+        _initialdirection = SOUTH_EAST;
+    } else if(_deltai == 1 && _deltaj == 0) {
+        _initialdirection = SOUTH;
+    } else if(_deltai == 1 && _deltaj == -1) {
+        _initialdirection = SOUTH_WEST;
+    } else if(_deltai == 0 && _deltaj == -1) {
+        _initialdirection = WEST;
+    } else if(_deltai == -1 && _deltaj == -1) {
+        _initialdirection = NORTH_WEST;
+    } else {
+        return _nonzeropixel;
+    }
 
     // traversing moore neighbour pixels starting from the
     int _i, _j;
     // Clock wise Traverse
     if ( cloclwise ) {
         printf ("\nClockwise");
-        for ( int i = 0; i < 8; i++ ) {
+        for ( int i = 1; i < 8; i++ ) {
 
-            _i = ij._x + _neighbors[( int ) ( _initialdirection + i ) % 8]._x;
-            _j = ij._y + _neighbors[( int ) ( _initialdirection + i ) % 8]._y;
+            _i = ij._x + mooreneighborhood[( int ) ( _initialdirection + i ) % 8]._x;
+            _j = ij._y + mooreneighborhood[( int ) ( _initialdirection + i ) % 8]._y;
 
             if ( binaryimage[_i][_j] != 0 ) {
                 _nonzeropixel._x = _i;
@@ -77,10 +100,10 @@ struct Coordinate findFirstNonZeroPixel (
     // Counter Clock wise Traverse
     } else 	{
         printf ("\nCounter Clockwise");
-        for ( int i = 0; i < 8; i++ ) {
+        for ( int i = 1; i < 8; i++ ) {
             // Additional +8 was added to handle non poitive cases when considering the modulo division
-            _i = ij._x + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._x;
-            _j = ij._y + _neighbors[( int ) ( _initialdirection - i + 8 ) % 8]._y;
+            _i = ij._x + mooreneighborhood[( int ) ( _initialdirection - i + 8 ) % 8]._x;
+            _j = ij._y + mooreneighborhood[( int ) ( _initialdirection - i + 8 ) % 8]._y;
             
             // mark the pixel as en examined pixel
             examined[( int ) ( _initialdirection - i + 8 ) % 8] = 1;
@@ -88,6 +111,9 @@ struct Coordinate findFirstNonZeroPixel (
             if ( binaryimage[_i][_j] != 0 ) {
                 _nonzeropixel._x = _i;
                 _nonzeropixel._y = _j;
+
+                // Mark the direction which the above non zero pixel was entered
+                examined[( int ) ( ( _initialdirection - ( i - 1 ) + 8 ) % 8 )] = -1;
                 break;
             }
         }
@@ -96,6 +122,20 @@ struct Coordinate findFirstNonZeroPixel (
     return _nonzeropixel;
 }
 
+struct Coordinate getPreviouslyExaminedPixel (
+    struct Coordinate centerpixel, 
+    char examinedpixels[], 
+    struct Coordinate mooreneighborhood[]) {
+
+    struct Coordinate _prevpixel;
+    for ( int i = 0; i < 8;i++ ) {
+        if ( examinedpixels[i] == -1 ) {
+            _prevpixel._x = centerpixel._x + mooreneighborhood[i]._x;
+            _prevpixel._y = centerpixel._y + mooreneighborhood[i]._y;
+        }
+    }
+    return _prevpixel;
+}
 
 // algorithm to follow a detected border
 struct Node* followBorder (
@@ -111,8 +151,8 @@ struct Node* followBorder (
 
     // 3.1 Let (i1, j1) be the first found nonzero pixel.
     // Just passing an array of bool to fill the argument. It has nothing to do when we examine in Clock wise direction.
-    bool _fakearray[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true, _fakearray);
+    char _fakearray[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true, _fakearray, MooreNeighborhood);
    
     // If no nonzero pixel is found, assign - NBD to fij and go to (4). // lonely pixel
     if ( _i1j1._x == -1 || _i1j1._y == -1 ) {
@@ -135,7 +175,8 @@ struct Node* followBorder (
         ( *i2j2 ) = _i1j1;
         struct Coordinate _i3j3 = ij;
         struct Coordinate _i4j4;
-        enum Direction _directionofi3j3 = WEST; // required in step 3.4
+        struct Coordinate _previouspixel; // required to store the direction which the first non zero pixel was entered
+        enum Direction _directionofi3j3 = WEST; // required in step 3.4 to know from where to begin visiting pixel 
         printf ("\nAbout to start following border using while true loop.");
         
         // Instead of a while true: use a counter to stop the infinite loop.
@@ -156,12 +197,13 @@ struct Node* followBorder (
             */
 
             // when counterclockwise traverse make the last but one argument false in the below function
-            bool _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false, _examined);
+            char _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false, _examined, MooreNeighborhood);
 
             // if a  nonzero pixel is found do followings
             if ( _i4j4._x != -1 && _i4j4._y != -1 ) {
                 printf ("\nFound a non zero pixel in while loop.");
+
                 /*
                 (3.4) Change the value fi3,j3 of the pixel (i3, j3) as follows:
 
@@ -196,8 +238,8 @@ struct Node* followBorder (
                 } else {
                     // otherwise, ( i2, j2 ) = ( i3, j3 ), ( i3 , j3 ) = ( i4, j4 ), and go back to (3.3).
                     printf ("\nUpdating pixels to find first non zero pixel");
-                    *i2j2 = _i3j3;
-                    _i3j3 = _i4j4;
+                    *i2j2 = _i3j3; // pixel which the visiting will be started in the next iteration
+                    _i3j3 = _i4j4; // newly found non zero pixel
                 }
             } else {
                 // If such non zero pixel is not found 

@@ -26,7 +26,7 @@ Function Arguments      : Start with simple letters, combine with simple letters
 // global variable declarations
 
 // sample binary image for contour detection
-
+/*
 int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -34,15 +34,16 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+*/
 
-/*int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
+int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
-*/
+
 
 int main () {
 
