@@ -9,7 +9,7 @@ path = 'E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\raw\\ImageHeaders\\'
 
 for size in ImageSizes:
     with open(path + 'image' + str(size)+ '.h', 'w') as imagefile:
-        imagefile.write('#include "../../libs/tsa/tsa.h"\n')
+        imagefile.write('#include "../../../libs/tsa/tsa.h"\n\n')
         imagefile.write('int BinaryImage' + str(size) + '[IMG_HEIGHT][IMG_WIDTH] = {\n')
         for i in range(size):
             imagefile.write('\t{')

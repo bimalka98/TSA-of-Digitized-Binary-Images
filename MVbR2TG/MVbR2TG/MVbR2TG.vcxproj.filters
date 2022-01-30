@@ -35,5 +35,8 @@
     <ClInclude Include="libs\dsa\dsa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="libs\tsa\tsa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
