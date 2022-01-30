@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/latex
 # Edit at https://www.toptal.com/developers/gitignore?templates=latex
 
+#exclude binary image header files
+MVbR2TG/MVbR2TG/data/raw/ImageHeaders/
+
 *.txt
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
