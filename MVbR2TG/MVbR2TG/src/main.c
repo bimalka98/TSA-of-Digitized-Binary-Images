@@ -11,6 +11,8 @@ Function Arguments      : Start with simple letters, combine with simple letters
 */
 
 // including libraries and dependancies
+
+#define __STDC_WANT_LIB_EXT1__ 1 //this must be defined before including the <stdio.h> library to use fopen_s
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,26 +36,29 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 */
 
 // Sample binary images saved in header files: Remember to image size parameters in the tsa.h file
-#include "../data/raw/ImageHeaders/image256.h"     // BinaryImage256
+//#include "../data/raw/ImageHeaders/image256.h"     // BinaryImage256
 //#include "../data/raw/ImageHeaders/image512.h"   // BinaryImage512
-//#include "../data/raw/ImageHeaders/image1024.h"  // BinaryImage1024
+#include "../data/raw/ImageHeaders/image1024.h"  // BinaryImage1024
 //#include "../data/raw/ImageHeaders/image2048.h"  // BinaryImage2048
  
 int main () {
 
-    clock_t start, end;
-    double cpu_time_used;
+    // declaring variables to measure time duration
+    clock_t _start, _end;
+    double _cputimeused;
 
-    start = clock (); 
-    struct Node* contours = findContours (BinaryImage256, IMG_WIDTH, IMG_HEIGHT);
-    end = clock ();
+    _start = clock (); 
+    struct Node* contours = findContours (BinaryImage1024, IMG_WIDTH, IMG_HEIGHT);
+    _end = clock ();
     
-    cpu_time_used = ( (( double ) ( end - start )) / CLOCKS_PER_SEC );
-
-    printf ("\nStart: %ld", start);
-    printf ("\nEnd: %ld", end);
-    printf ("\nExecution time: %f", cpu_time_used);
+    _cputimeused = ( (( double ) ( _end - _start )) / CLOCKS_PER_SEC );
+    printf ("\nStart: %ld", _start);
+    printf ("\nEnd: %ld", _end);
+    printf ("\nExecution time: %f", _cputimeused);
     
-    
+    // saving the processed image to a file
+    FILE* _fptr;
+    char const* _filepath = "E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\processed\\ImageTexts\\image1024.txt";
+    writeImage (BinaryImage1024, &_fptr, _filepath);
     return 0;
 }

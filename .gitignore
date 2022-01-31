@@ -4,6 +4,7 @@
 
 #exclude binary image header files
 MVbR2TG/MVbR2TG/data/raw/ImageHeaders/
+MVbR2TG/MVbR2TG/data/processed/ImageTexts/
 
 *.txt
 ### LaTeX ###

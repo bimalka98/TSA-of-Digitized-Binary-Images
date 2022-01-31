@@ -3,7 +3,10 @@
 Created on Sun Jan 30 09:52:13 2022
 
 @author: Bimalka Piyaruwan
+
+Script to generate test images for my findContour algorithm
 """
+
 ImageSizes = [256, 512, 1024, 2048]
 path = 'E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\raw\\ImageHeaders\\'
 

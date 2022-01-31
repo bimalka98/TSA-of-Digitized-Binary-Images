@@ -4,7 +4,10 @@ Created on Fri Jan 28 15:29:46 2022
 
 @author: Bimalka Piyaruwan
 """
+"""
+    Script for timing analysis of findcontour fucntion in openCV
 
+ """
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
