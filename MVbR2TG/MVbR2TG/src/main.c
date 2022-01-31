@@ -1,7 +1,7 @@
 /*
 Author: Bimalka Piyaruwan 
 Date Created: 2022/01/13
-Last Modified: 2022/01/30
+Last Modified: 2022/01/31
 
 Varable declaration convention
 Global Variables        : Start with capital, Combine with Capital letters
@@ -51,6 +51,7 @@ int main () {
     struct Node* contours = findContours (BinaryImage1024, IMG_WIDTH, IMG_HEIGHT);
     _end = clock ();
     
+    // calculating the execution time
     _cputimeused = ( (( double ) ( _end - _start )) / CLOCKS_PER_SEC );
     printf ("\nStart: %ld", _start);
     printf ("\nEnd: %ld", _end);
@@ -60,5 +61,6 @@ int main () {
     FILE* _fptr;
     char const* _filepath = "E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\processed\\ImageTexts\\image1024.txt";
     writeImage (BinaryImage1024, &_fptr, _filepath);
+    
     return 0;
 }
