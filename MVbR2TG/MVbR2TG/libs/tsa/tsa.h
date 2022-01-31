@@ -33,6 +33,8 @@ enum Direction{
     NORTH_WEST
 };
 
+
+
 // declaring the fucntion to find the contours of the binary image
 struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height);
 

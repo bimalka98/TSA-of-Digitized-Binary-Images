@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author          : Bimalka Piyaruwan 
 Date Created    : 2022/01/18
-Last Modified   : 2022/01/28
+Last Modified   : 2022/01/31
 
 Algorithms can be effectively used in component counting, shrinking, and 
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -14,8 +14,7 @@ topological structural analysis of binary images, when a sequential digital comp
 // ALGORITHM 1
 #include "tsa.h"
 
-// Global Variable Definitions
-
+// global variable declaration
 struct Coordinate MooreNeighborhood[8] = {
         {-1,  0}, // NORTH
         {-1, +1}, // NORTH_EAST
@@ -127,7 +126,7 @@ struct Coordinate getPreviouslyExaminedPixel (
     char examinedpixels[], 
     struct Coordinate mooreneighborhood[]) {
 
-    struct Coordinate _prevpixel;
+    struct Coordinate _prevpixel = {-1, -1};
     for ( int i = 0; i < 8;i++ ) {
         if ( examinedpixels[i] == -1 ) {
             _prevpixel._x = centerpixel._x + mooreneighborhood[i]._x;
