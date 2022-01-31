@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-size = 4096*2
+size = 512
 Image = np.zeros((size,size))
 TimingAnalysis = []
 

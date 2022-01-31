@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 path = "E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\processed\\ImageTexts\\"
-size = 1024
+size = 512
 filename= "image"+ str(size)+ ".txt"
 
 # read the file and save it as a python array

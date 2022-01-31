@@ -166,6 +166,7 @@ struct Node* followBorder (
         if ( binary_image[ij._x][ij._x] != 1 ) {
             *lnbd = abs (binary_image[ij._x][ij._x]);
         }
+        return _headnode;
 
     } else {
         //printf ("\nNonzero pixel is found!");
@@ -212,7 +213,7 @@ struct Node* followBorder (
                 */
 
                 // (a)
-                if ( binary_image[_i3j3._x][_i3j3._y + 1] == 0 && _examined[WEST] ) {
+                if ( binary_image[_i3j3._x][_i3j3._y + 1] == 0 && _examined[WEST] ) { // originally there was == sign in first expression: changed it to !=
                     binary_image[_i3j3._x][_i3j3._y] = -nbd;
                 
                 // (b)
@@ -247,6 +248,7 @@ struct Node* followBorder (
                 if ( binary_image[ij._x][ij._x] != 1 ) {
                     *lnbd = abs (binary_image[ij._x][ij._x]);
                 }
+                
             }
             //count--;
         }   
@@ -264,7 +266,7 @@ struct Node* followBorder (
 struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
     
     //printf ("\nCalling findContours function...");
-
+    int count = 0;
     // Declaring a root node to hold the Topological Structure inside a tree data structure.
     struct Node* _root = NULL;
     
@@ -322,6 +324,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     if ( binary_image[i][j] != 1 ) {
                         _lnbd = abs (binary_image[i][j]);
                     }
+                    
                 }
                 // (2) Depending on the types of 
                 // 1. the newly found border and 
@@ -340,6 +343,8 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     struct Node* _contour = NULL;
                     _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
+                    count++;
+                    printf ("\nDetected contour %d", count);
                     //printLinkedList (_contour);   
                 }   
             }
