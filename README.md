@@ -1,4 +1,4 @@
-# Machine Vision based Real Time Trajectory Generation (MVbR2TG)
+# Machine Vision based Real Time Trajectory Generation (MVbR2TG) 🖥  👁
 
 *Most of the robotic arms used in industrial environments operate in a pre-programmed
 cycle. When it comes to the way a human does the same task is much different as
