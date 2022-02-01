@@ -20,45 +20,80 @@
 
 // In order to use the delay function F_CPU must be defined at first.
 #ifndef F_CPU
-#define F_CPU 1000000UL
+#define F_CPU 8000000UL
 #endif
 
 // Include required built-in header files
+#include <stdio.h>
+#include <stdlib.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
+
 
 // Include required custom header files
 #include "i2c_lcd.h"
 #include "i2cmaster.h"
 
+// global variables to be changed inside even in the ISR
+volatile int OverflowCount = 11;
+volatile int ClockTicks = 0;
 
+ISR(TIMER1_COMPA_vect)
+{
+	cli();
+	OverflowCount++;
+	sei();
+}
 
 int main(void)
 {
-    // Data need to be in "char" data type to display through the LCD.
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// Data need to be in "char" data type to display through the LCD.
     // Define global variables to hold char data.
-    char *line_1_text = "Today is Tuesday";
-    char *line_2_text = "2/1/2022 Its 9am";
-
+    char *_line1txt1 = "Overflows:";
+	char *_line2txt1 = "Ticks:";
+	
+	// converting overflow count in to a stream of chars to display
+	int length = snprintf( NULL, 0, "%d",  OverflowCount);
+	char *_line1txt2 = malloc( length + 1 );
+	snprintf( _line1txt2, length + 1, "%d",  OverflowCount);
+	
+	// converting clock tics count in to a stream of chars to display
+	length = snprintf( NULL, 0, "%d",  ClockTicks);
+	char *_line2txt2 = malloc( length + 1 );
+	snprintf( _line2txt2, length + 1, "%d",  ClockTicks);
+	
     // Initialize the LCD to display
     lcd_init(LCD_BACKLIGHT_ON);
     lcd_cursorOFF();
 
-
     while (1)
     {
-      // Calling the function to display the line_1_text defined previously.
-      lcd_puts(line_1_text);
-
-      // Move the cursor to the beginning of the next line.
-      lcd_goto_xy(0,1);
-
-      // Calling the function to display the line_2_text defined previously.
-      lcd_puts(line_2_text);
-
+      // Calling the function to display the _line1txt1
+      lcd_puts(_line1txt1);
+      // Move the cursor
+      lcd_goto_xy(10,0);
+      // Calling the function to display _line1txt2
+      lcd_puts(_line1txt2);
+	  	  	  
+	  // Move the cursor to second line
+	  lcd_goto_xy(0,1);		
+	  lcd_puts(_line2txt1);
+	  lcd_goto_xy(10,1);
+	  lcd_puts(_line2txt2);
       // Wait for a while before clearing the display.
       _delay_ms(1000);
-
       // Calling the function to clear the screen
       lcd_clear();
 
