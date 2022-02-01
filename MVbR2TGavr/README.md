@@ -1,5 +1,13 @@
 # Installing AVRDUDE for Atmel Studio(latest version known as Microchip Studio)
 
+## Install drivers for USBasp cable
+
+1. Go to https://zadig.akeo.ie/ and download Zadig
+2. Plug the USBasp cable into one of the USB ports.
+3. Open zadig executable file.
+4. Click Options -> List All Devices -> Select USBasp from the Drop down menu.
+5. Select `libusb-win32 (v1.2.6.0)` and click install driver.
+
 ## Install WinAVR using the link https://sourceforge.net/projects/winavr/
 
 WinAVR (tm) is a suite of executable, open source software development tools for the Atmel AVR series of RISC microprocessors hosted on the Windows platform. Includes the GNU GCC compiler for C and C++.
