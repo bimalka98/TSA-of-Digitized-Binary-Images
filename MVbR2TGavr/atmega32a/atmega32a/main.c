@@ -37,8 +37,8 @@ int main(void)
 {
     // Data need to be in "char" data type to display through the LCD.
     // Define global variables to hold char data.
-    char *line_1_text = "Hello,";
-    char *line_2_text = "World!";
+    char *line_1_text = "Today is";
+    char *line_2_text = "2/1/2022";
 
     // Initialize the LCD to display
     lcd_init(LCD_BACKLIGHT_ON);
