@@ -30,14 +30,18 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
+// user defined libraries
+#include "tsa.h"
+#include "dsa.h"
+
 
 // Include required custom header files
 #include "i2c_lcd.h"
 #include "i2cmaster.h"
 
 // global variables to be changed inside even in the ISR
-volatile int OverflowCount = 0;
-volatile int ClockTicks = 0;
+volatile unsigned int OverflowCount = 0;
+volatile unsigned int ClockTicks = 0;
 
 ISR(TIMER1_OVF_vect)
 {
@@ -57,12 +61,24 @@ ISR(TIMER1_OVF_vect)
 	TCNT1 = 0; // Resetting the counter to 1 at each overflow
 }
 
+
+int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+
 int main(void)
 {
 	//cli ; // Disable Global Interrupts
     TCCR1A = 0;
     TCCR1B = 0;	
-	TCCR1B |= (1 << CS00);   // clk (No pre-scaling and take the oscillating frequency of the system clock source)
+	TCCR1B |= (1 << CS00);   // clock (No pre-scaling and take the oscillating frequency of the system clock source)
 	/*
 	See Page 117: Atmega32A data sheet for TIMSK
 	• Bit 2 – TOIE1: Timer/Counter1, Overflow Interrupt Enable
@@ -79,8 +95,8 @@ int main(void)
 	
 	// your function goes here.
 	/* some function*/
-	_delay_ms(1000);
-
+	struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
+	//_delay_ms(1000);
 	//cli ; // Disable Global Interrupts
 	ClockTicks = TCNT1;
 	

@@ -7,7 +7,7 @@ Created on Sun Jan 30 09:52:13 2022
 Script to generate test images for my findContour algorithm
 """
 
-ImageSizes = [256, 512, 1024, 2048]
+ImageSizes = [16, 32,]# 64, 128, 256, 512, 1024, 2048]
 path = 'E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\raw\\ImageHeaders\\'
 
 for size in ImageSizes:

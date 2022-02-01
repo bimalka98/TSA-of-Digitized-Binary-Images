@@ -120,10 +120,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="dsa.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="i2c_lcd.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tsa.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="twimaster.c">

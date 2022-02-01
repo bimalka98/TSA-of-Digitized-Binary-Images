@@ -344,7 +344,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
                     count++;
-                    printf ("\nDetected contour %d", count);
+                    //printf ("\nDetected contour %d", count);
                     //printLinkedList (_contour);   
                 }   
             }
