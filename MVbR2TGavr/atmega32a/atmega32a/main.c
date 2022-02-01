@@ -20,7 +20,7 @@
 
 // In order to use the delay function F_CPU must be defined at first.
 #ifndef F_CPU
-#define F_CPU 8000000UL
+#define F_CPU 1000000UL
 #endif
 
 // Include required built-in header files
@@ -36,23 +36,53 @@
 #include "i2cmaster.h"
 
 // global variables to be changed inside even in the ISR
-volatile int OverflowCount = 11;
+volatile int OverflowCount = 0;
 volatile int ClockTicks = 0;
 
-ISR(TIMER1_COMPA_vect)
+ISR(TIMER1_OVF_vect)
 {
-	cli();
+	cli(); // Disable Global Interrupts
 	OverflowCount++;
-	sei();
+	/* 
+	When an overflow happens Timer Overflow Flag(TOV0) in TIFR is automatically set to 1.
+	Now, we need to Reset the TOV0 flag back to zero in order to identify another overflow.
+	Unlike other registers, in order to reset it to zero, We need to make it one. Not zero.
+	
+	TOV1 is automatically cleared when the Timer/Counter1 Overflow interrupt vector is executed. Alternatively, TOV1
+	can be cleared by writing a logic one to its bit location.
+	
+	*/
+	TIFR = 0x01;
+	sei(); // Enable Global Interrupts
+	TCNT1 = 0; // Resetting the counter to 1 at each overflow
 }
 
 int main(void)
 {
-    
+	//cli ; // Disable Global Interrupts
+    TCCR1A = 0;
+    TCCR1B = 0;	
+	TCCR1B |= (1 << CS00);   // clk (No pre-scaling and take the oscillating frequency of the system clock source)
+	/*
+	See Page 117: Atmega32A data sheet for TIMSK
+	• Bit 2 – TOIE1: Timer/Counter1, Overflow Interrupt Enable
+	When this bit is written to one, and the I-flag in the Status Register is set (interrupts globally enabled), the
+	Timer/Counter1 Overflow Interrupt is enabled. The corresponding Interrupt Vector (See “Interrupts” on page 51) is
+	executed when the TOV1 Flag, located in TIFR, is set.
+	*/
+	TIMSK  |= (1 << TOIE1);   // Timer/Counter1, Overflow Interrupt Enable
 	
 	
 	
+	sei(); // Enable Global Interrupts
+	TCNT1 = 0; // initialize counter to 0
 	
+	// your function goes here.
+	/* some function*/
+	_delay_ms(1000);
+
+	//cli ; // Disable Global Interrupts
+	ClockTicks = TCNT1;
 	
 	
 	
