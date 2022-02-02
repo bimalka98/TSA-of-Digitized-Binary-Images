@@ -3,11 +3,11 @@ Paper Implementation:
 "Topological Structural Analysis of Digitized Binary Images by Border Following"
 by SATOSHI SUZUKI AND KEIICHI ABE
 
-Author          : Bimalka Piyaruwan 
+Author          : Bimalka Piyaruwan
 Date Created    : 2022/01/18
 Last Modified   : 2022/01/31
 
-Algorithms can be effectively used in component counting, shrinking, and 
+Algorithms can be effectively used in component counting, shrinking, and
 topological structural analysis of binary images, when a sequential digital computer is used.
 */
 
@@ -33,15 +33,15 @@ struct Coordinate MooreNeighborhood[8] = {
 */
 
 
-// Moore-Neighbor Tracing for 3.1 
+// Moore-Neighbor Tracing for 3.1
 // http://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/moore.html
 
 struct Coordinate findFirstNonZeroPixel (
             struct Coordinate ij,
-            struct Coordinate i2j2, 
-            int binaryimage[IMG_HEIGHT][IMG_WIDTH],
+            struct Coordinate i2j2,
+            short  binaryimage[IMG_HEIGHT][IMG_WIDTH],
             bool cloclwise,
-            char examined[],
+            short examined[],
             struct Coordinate mooreneighborhood[]) {
     //printf ("\nCalling findFirstNonZeroPixel algorithm.");
 
@@ -54,11 +54,11 @@ struct Coordinate findFirstNonZeroPixel (
     of (i, j) and find a nonzero pixel. Let (i1, j1) be the first found nonzero
     pixel. If no nonzero pixel is found, assign -NBD to fij and go to (4). This is implemented inside the other fucntion.
     */
-    
+
     // find the initial direction to start the examination.
     enum Direction _initialdirection;
-    int _deltai = i2j2._x - ij._x;
-    int _deltaj = i2j2._y - ij._y;
+    short  _deltai = i2j2._x - ij._x;
+    short  _deltaj = i2j2._y - ij._y;
 
     if(_deltai == -1 && _deltaj == 0) {
         _initialdirection = NORTH;
@@ -81,11 +81,11 @@ struct Coordinate findFirstNonZeroPixel (
     }
 
     // traversing moore neighbour pixels starting from the
-    int _i, _j;
+    short  _i, _j;
     // Clock wise Traverse
     if ( cloclwise ) {
         //printf ("\nClockwise");
-        for ( int i = 1; i < 8; i++ ) {
+        for ( short  i = 1; i < 8; i++ ) {
 
             _i = ij._x + mooreneighborhood[( int ) ( _initialdirection + i ) % 8]._x;
             _j = ij._y + mooreneighborhood[( int ) ( _initialdirection + i ) % 8]._y;
@@ -99,11 +99,11 @@ struct Coordinate findFirstNonZeroPixel (
     // Counter Clock wise Traverse
     } else 	{
         //printf ("\nCounter Clockwise");
-        for ( int i = 1; i < 8; i++ ) {
+        for ( short  i = 1; i < 8; i++ ) {
             // Additional +8 was added to handle non poitive cases when considering the modulo division
             _i = ij._x + mooreneighborhood[( int ) ( _initialdirection - i + 8 ) % 8]._x;
             _j = ij._y + mooreneighborhood[( int ) ( _initialdirection - i + 8 ) % 8]._y;
-            
+
             // mark the pixel as en examined pixel
             examined[( int ) ( _initialdirection - i + 8 ) % 8] = 1;
 
@@ -117,17 +117,17 @@ struct Coordinate findFirstNonZeroPixel (
             }
         }
     }
-    
+
     return _nonzeropixel;
 }
 
 struct Coordinate getPreviouslyExaminedPixel (
-    struct Coordinate centerpixel, 
-    char examinedpixels[], 
+    struct Coordinate centerpixel,
+    short examinedpixels[],
     struct Coordinate mooreneighborhood[]) {
 
     struct Coordinate _prevpixel = {-1, -1};
-    for ( int i = 0; i < 8;i++ ) {
+    for ( short  i = 0; i < 8;i++ ) {
         if ( examinedpixels[i] == -1 ) {
             _prevpixel._x = centerpixel._x + mooreneighborhood[i]._x;
             _prevpixel._y = centerpixel._y + mooreneighborhood[i]._y;
@@ -138,11 +138,11 @@ struct Coordinate getPreviouslyExaminedPixel (
 
 // algorithm to follow a detected border
 struct Node* followBorder (
-    struct Coordinate ij, struct Coordinate* i2j2, 
-    int binary_image[IMG_HEIGHT][IMG_WIDTH],
-    int nbd,
+    struct Coordinate ij, struct Coordinate* i2j2,
+    short  binary_image[IMG_HEIGHT][IMG_WIDTH],
+    short  nbd,
     int *lnbd) {
-
+    printf ("\nFollowing the detected border...");
     // creating a linked list to store the pixels of the currently following border
     struct Node* _headnode = NULL;
     struct Node* _currentnode = _headnode;
@@ -150,13 +150,13 @@ struct Node* followBorder (
 
     // 3.1 Let (i1, j1) be the first found nonzero pixel.
     // Just passing an array of bool to fill the argument. It has nothing to do when we examine in Clock wise direction.
-    char _fakearray[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    short _fakearray[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     struct Coordinate _i1j1 = findFirstNonZeroPixel (ij, *i2j2, binary_image, true, _fakearray, MooreNeighborhood);
-   
+
     // If no nonzero pixel is found, assign - NBD to fij and go to (4). // lonely pixel
     if ( _i1j1._x == -1 || _i1j1._y == -1 ) {
         binary_image[ij._x][ij._y] = -nbd;
-        
+
         // appending the next pixel of the border
         _pixeldata._coord = ij;
         appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
@@ -176,19 +176,19 @@ struct Node* followBorder (
         struct Coordinate _i3j3 = ij;
         struct Coordinate _i4j4;
         struct Coordinate _previouspixel; // required to store the direction which the first non zero pixel was entered
-        enum Direction _directionofi3j3 = WEST; // required in step 3.4 to know from where to begin visiting pixel 
+        enum Direction _directionofi3j3 = WEST; // required in step 3.4 to know from where to begin visiting pixel
         //printf ("\nAbout to start following border using while true loop.");
-        
+
         // Instead of a while true: use a counter to stop the infinite loop.
-        //int count = IMG_HEIGHT*IMG_WIDTH;
-        while ( true ) 	{
-        //while ( count >0 ) {
-            
+        short  count = IMG_HEIGHT*IMG_WIDTH;
+        //while ( true ) 	{
+        while ( count >0 ) {
+
             // appending the next pixel of the border
             //printf ("\nAppend next pixel to the list.");
             _pixeldata._coord = _i3j3;
             appendNodeToLinkedList (&_headnode, &_currentnode, _pixeldata);
-            
+
             /*
             (3.3) Starting from the next element of the pixel (i2, j2)
             in the counterclockwise order, examine counterclockwise
@@ -197,7 +197,7 @@ struct Node* followBorder (
             */
 
             // when counterclockwise traverse make the last but one argument false in the below function
-            char _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            short _examined[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             _i4j4 = findFirstNonZeroPixel (_i3j3, *i2j2, binary_image, false, _examined, MooreNeighborhood);
 
             // if a  nonzero pixel is found do followings
@@ -215,7 +215,7 @@ struct Node* followBorder (
                 // (a)
                 if ( binary_image[_i3j3._x][_i3j3._y + 1] == 0 && _examined[WEST] ) { // originally there was == sign in first expression: changed it to !=
                     binary_image[_i3j3._x][_i3j3._y] = -nbd;
-                
+
                 // (b)
                 } else if ( binary_image[_i3j3._x][_i3j3._y] == 1 ) {
                     binary_image[_i3j3._x][_i3j3._y] = nbd;
@@ -242,16 +242,16 @@ struct Node* followBorder (
                     _i3j3 = _i4j4; // newly found non zero pixel
                 }
             } else {
-                // If such non zero pixel is not found 
+                // If such non zero pixel is not found
                 // GOTO Step (4).
                 //printf ("\nMove to step 4 from followBorder function.");
                 if ( binary_image[ij._x][ij._x] != 1 ) {
                     *lnbd = abs (binary_image[ij._x][ij._x]);
                 }
-                
+
             }
-            //count--;
-        }   
+            count--;
+        }
     }
     return _headnode;
 }
@@ -263,30 +263,30 @@ struct Node* followBorder (
 * #################################
 */
 
-struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height) {
-    
+struct Node* findContours (short  binary_image[IMG_HEIGHT][IMG_WIDTH], short  image_width, short  image_height) {
+
     //printf ("\nCalling findContours function...");
-    int count = 0;
+    short  count = 0;
     // Declaring a root node to hold the Topological Structure inside a tree data structure.
     struct Node* _root = NULL;
-    
+
     // Set initially NBD to 1
-    int _nbd = 1; // the sequential number of the current border; frame gets nbd = 1
-    int _lnbd = 1; // the sequential number of the last border
+    short  _nbd = 1; // the sequential number of the current border; frame gets nbd = 1
+    short  _lnbd = 1; // the sequential number of the last border
     struct Coordinate _ij;      // local variable to keep the current pixel
     struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border
-    
-    
+
+
 
 
     // Scan the picture with a TV raster and perform the following steps for each pixel such that fij # 0
-    for ( int i = 0; i < image_height; i++ ) {
+    for ( short  i = 0; i < image_height; i++ ) {
 
         // Every time we begin to scan a new row of the picture, reset LNBD to 1.
         _lnbd = 1;
 
-        for ( int j = 1; j < image_width - 1; j++ ) {
-
+        for ( short  j = 1; j < image_width - 1; j++ ) {
+            printf ("\nCurrent Pixel: (%d, %d)", i, j);
             if ( binary_image[i][j] != 0 ) {
 
                 bool _outerborder = false;
@@ -294,19 +294,20 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
 
                 // (1) Select one of the following:
                 if ( binary_image[i][j] == 1 && binary_image[i][j - 1] == 0 ) {
-                    // then decide that the pixel (i, j) is the border following 
+                    // then decide that the pixel (i, j) is the border following
                     // starting point of an outer border,
                     _outerborder = true;
                     //increment NBD, and (i2, j2) <- (i, j - 1).
                     _nbd++;
                     _i2j2._x = i;
                     _i2j2._y = j - 1;
-                // Remove > sign from first comparison to avoid meeting holeborder critera will stuck the machine 
-                } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) { 
-                    // then decide that the pixel (i, j) is the border following 
-                    // starting point of a hole border, 
+                    printf ("\nOuter border!");
+                // Remove > sign from first comparison to avoid meeting holeborder critera will stuck the machine
+                } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
+                    // then decide that the pixel (i, j) is the border following
+                    // starting point of a hole border,
                     _holeborder = true;
-                    // increment NBD, and (i2, j2) <- (i, j + 1).                   
+                    // increment NBD, and (i2, j2) <- (i, j + 1).
                     _nbd++;
                     _i2j2._x = i;
                     _i2j2._y = j + 1;
@@ -315,7 +316,7 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     if ( binary_image[i][j] > 1 ) {
                         _lnbd = binary_image[i][j];
                     }
-
+                    printf ("\nHole border!");
                 } else {
                     // (c) Otherwise, go to (4).
                     // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
@@ -324,16 +325,16 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     if ( binary_image[i][j] != 1 ) {
                         _lnbd = abs (binary_image[i][j]);
                     }
-                    
+                    printf ("Neither Outer nor hole!");
                 }
-                // (2) Depending on the types of 
-                // 1. the newly found border and 
-                // 2. the border with the sequential number LNBD (i.e., the last border met on the current row), 
+                // (2) Depending on the types of
+                // 1. the newly found border and
+                // 2. the border with the sequential number LNBD (i.e., the last border met on the current row),
                 // decide the parent of the current border as shown in Table 1.
 
-                // (3) From the starting point (i, j), follow the detected border: 
+                // (3) From the starting point (i, j), follow the detected border:
                 // this is done by the following substeps (3.1) through (3.5).
-                               
+
                 if ( _outerborder || _holeborder ) {
                     _ij._x = i;
                     _ij._y = j;
@@ -345,8 +346,8 @@ struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_wi
                     _root = _contour;
                     count++;
                     printf ("\nDetected contour %d", count);
-                    //printLinkedList (_contour);   
-                }   
+                    //printLinkedList (_contour);
+                }
             }
         }
     }

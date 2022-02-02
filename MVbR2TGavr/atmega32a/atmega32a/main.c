@@ -55,8 +55,7 @@ ISR(TIMER1_OVF_vect)
 	Unlike other registers, in order to reset it to zero, We need to make it one. Not zero.
 	
 	TOV1 is automatically cleared when the Timer/Counter1 Overflow interrupt vector is executed. Alternatively, TOV1
-	can be cleared by writing a logic one to its bit location.
-	
+	can be cleared by writing a logic one to its bit location.	
 	*/
 	TIFR = 0x01;
 	sei(); // Enable Global Interrupts
@@ -73,8 +72,8 @@ uint8_t BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-*/
 
+*/
 int main(void)
 {
 	//cli ; // Disable Global Interrupts
@@ -90,7 +89,9 @@ int main(void)
 	*/
 	TIMSK  |= (1 << TOIE1);   // Timer/Counter1, Overflow Interrupt Enable
 	
-	
+	//lcd_puts("Start");
+	//_delay_ms(1000);
+	//while(1){}
 	//==================================================================================================
 	sei(); // Enable Global Interrupts
 	TCNT1 = 0; // initialize counter to 0	

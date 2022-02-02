@@ -39,7 +39,7 @@ struct Coordinate MooreNeighborhood[8] = {
 struct Coordinate findFirstNonZeroPixel (
             struct Coordinate ij,
             struct Coordinate i2j2,
-            uint8_t binaryimage[IMG_HEIGHT][IMG_WIDTH],
+            int16_t binaryimage[IMG_HEIGHT][IMG_WIDTH],
             bool cloclwise,
             char examined[],
             struct Coordinate mooreneighborhood[]) {
@@ -139,7 +139,7 @@ struct Coordinate getPreviouslyExaminedPixel (
 // algorithm to follow a detected border
 struct Node* followBorder (
     struct Coordinate ij, struct Coordinate* i2j2,
-    uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH],
+    int16_t binary_image[IMG_HEIGHT][IMG_WIDTH],
     uint8_t nbd,
     uint8_t *lnbd) {
 
@@ -263,10 +263,18 @@ struct Node* followBorder (
 * #################################
 */
 
-struct Node* findContours (uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t image_width, uint8_t image_height) {
-
+struct Node* findContours (int16_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t image_width, uint8_t image_height) {
+	
     //printf ("\nCalling findContours function...");
     uint8_t count = 0;
+	int length = snprintf( NULL, 0, "%d",  count);
+	char *_line1txt2 = malloc( length + 1 );
+	snprintf( _line1txt2, length + 1, "%d",  count);
+	
+	while(1){
+		lcd_puts(_line1txt2);
+		_delay_ms(1000);
+	}	
     // Declaring a root node to hold the Topological Structure inside a tree data structure.
     struct Node* _root = NULL;
 
@@ -274,7 +282,7 @@ struct Node* findContours (uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t 
     uint8_t _nbd = 1; // the sequential number of the current border; frame gets nbd = 1
     uint8_t _lnbd = 1; // the sequential number of the last border
     struct Coordinate _ij;      // local variable to keep the current pixel
-    struct Coordinate _i2j2;    // adjascent pixel depending on the type of the border
+    struct Coordinate _i2j2;    // adjacent pixel depending on the type of the border
 
 
 
@@ -344,6 +352,7 @@ struct Node* findContours (uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t 
                     _contour = followBorder (_ij, &_i2j2, binary_image, _nbd, &_lnbd);
                     _root = _contour;
                     count++;
+					
                     //printf ("\nDetected contour %d", count);
                     //printLinkedList (_contour);
                 }

@@ -36,20 +36,22 @@ int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 */
 
 // Sample binary images saved in header files: Remember to image size parameters in the tsa.h file
-//#include "../data/raw/ImageHeaders/image256.h"     // BinaryImage256
+#include "../data/raw/ImageHeaders/image256.h"     // BinaryImage256
 //#include "../data/raw/ImageHeaders/image512.h"   // BinaryImage512
 //#include "../data/raw/ImageHeaders/image1024.h"  // BinaryImage1024
-#include "../data/raw/ImageHeaders/image2048.h"  // BinaryImage2048
+//#include "../data/raw/ImageHeaders/image2048.h"  // BinaryImage2048
  
 int main () {
 
+    
+    
     // declaring variables to measure time duration
     clock_t _start, _end;
     double _cputimeused;
 
 
     _start = clock (); 
-    struct Node* contours = findContours (BinaryImage2048, IMG_WIDTH, IMG_HEIGHT);
+    struct Node* contours = findContours (BinaryImage256, IMG_WIDTH, IMG_HEIGHT);
     _end = clock ();
     
     // calculating the execution time
@@ -60,8 +62,8 @@ int main () {
     
     // saving the processed image to a file
     FILE* _fptr;
-    char const* _filepath = "E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\processed\\ImageTexts\\image2048.txt";
-    writeImage (BinaryImage2048, &_fptr, _filepath);
+    char const* _filepath = "E:\\MVbR2TG\\MVbR2TG\\MVbR2TG\\data\\processed\\ImageTexts\\image256.txt";
+    writeImage (BinaryImage256, &_fptr, _filepath);
     
     return 0;
 }

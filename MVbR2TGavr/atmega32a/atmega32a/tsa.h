@@ -15,6 +15,7 @@ topological structural analysis of binary images, when a sequential digital comp
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <util/delay.h>
 #include "dsa.h"
 
 // defining parameters of the image
@@ -36,12 +37,12 @@ enum Direction{
 
 
 // declaring the fucntion to find the contours of the binary image
-struct Node* findContours (uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t image_width, uint8_t image_height);
+struct Node* findContours (int16_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t image_width, uint8_t image_height);
 
 struct Coordinate findFirstNonZeroPixel (
     struct Coordinate ij,
     struct Coordinate i2j2,
-    uint8_t binaryimage[IMG_HEIGHT][IMG_WIDTH],
+    int16_t binaryimage[IMG_HEIGHT][IMG_WIDTH],
     bool cloclwise,
     char examined[],
     struct Coordinate mooreneighborhood[]); // array is required only when traversing CCW(Counter Clock Wise) at step 3.4
@@ -49,7 +50,7 @@ struct Coordinate findFirstNonZeroPixel (
 struct Node* followBorder (
     struct Coordinate ij,
     struct Coordinate* i2j2,
-    uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH],
+    int16_t binary_image[IMG_HEIGHT][IMG_WIDTH],
     uint8_t nbd,
     uint8_t* lnbd);
 

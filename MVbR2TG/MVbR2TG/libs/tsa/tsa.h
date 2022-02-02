@@ -3,11 +3,11 @@ Paper Implementation:
 "Topological Structural Analysis of Digitized Binary Images by Border Following"
 by SATOSHI SUZUKI AND KEIICHI ABE
 
-Author          : Bimalka Piyaruwan 
+Author          : Bimalka Piyaruwan
 Date Created    : 2022/01/18
 Last Modified   : 2022/01/28
 
-Algorithms can be effectively used in component counting, shrinking, and 
+Algorithms can be effectively used in component counting, shrinking, and
 topological structural analysis of binary images, when a sequential digital computer is used.
 */
 
@@ -18,8 +18,8 @@ topological structural analysis of binary images, when a sequential digital comp
 #include "../dsa/dsa.h"
 
 // defining parameters of the image
-#define IMG_HEIGHT 2048
-#define IMG_WIDTH  2048
+#define IMG_HEIGHT 256
+#define IMG_WIDTH  256
 
 // type definitiions
 enum Direction{
@@ -36,24 +36,24 @@ enum Direction{
 
 
 // declaring the fucntion to find the contours of the binary image
-struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height);
+struct Node* findContours (short binary_image[IMG_HEIGHT][IMG_WIDTH], short image_width, short image_height);
 
 struct Coordinate findFirstNonZeroPixel (
     struct Coordinate ij,
     struct Coordinate i2j2,
-    int binaryimage[IMG_HEIGHT][IMG_WIDTH],
+    short binaryimage[IMG_HEIGHT][IMG_WIDTH],
     bool cloclwise,
-    char examined[],
+    short examined[],
     struct Coordinate mooreneighborhood[]); // array is required only when traversing CCW(Counter Clock Wise) at step 3.4
 
 struct Node* followBorder (
     struct Coordinate ij,
     struct Coordinate* i2j2,
-    int binary_image[IMG_HEIGHT][IMG_WIDTH],
-    int nbd,
+    short binary_image[IMG_HEIGHT][IMG_WIDTH],
+    short nbd,
     int* lnbd);
 
 struct Coordinate getPreviouslyExaminedPixel (
     struct Coordinate centerpixel,
-    char examinedpixels[],
+    short examinedpixels[],
     struct Coordinate mooreneighborhood[]); // This fucntion was not used inside the algorithm. Found a new way of doing the same thing.

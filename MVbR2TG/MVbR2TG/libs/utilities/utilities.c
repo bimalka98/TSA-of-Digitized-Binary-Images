@@ -10,7 +10,7 @@ void showImage (int binaryimage[IMG_HEIGHT][IMG_WIDTH]) {
     }
 }
 
-void writeImage (int binaryimage[IMG_HEIGHT][IMG_WIDTH], FILE** fptr, char const* filepath) {
+void writeImage (short binaryimage[IMG_HEIGHT][IMG_WIDTH], FILE** fptr, char const* filepath) {
 
     // opening the file in the safe mood
     errno_t _errorcode = fopen_s (fptr, filepath, "w");
@@ -20,10 +20,10 @@ void writeImage (int binaryimage[IMG_HEIGHT][IMG_WIDTH], FILE** fptr, char const
         printf ("\nError! Failed to open file in %c mode!", 'w');
 
     }   else {
-        
+
         // if the file succesfully open. save the image to the file
         printf ("\nWriting the processed image to the file...");
-        
+
         for ( int i = 0; i < IMG_HEIGHT; i++ ) {
             for ( int j = 0; j < IMG_WIDTH; j++ ) {
                 fprintf (*fptr, "%d ", binaryimage[i][j]);
@@ -33,10 +33,5 @@ void writeImage (int binaryimage[IMG_HEIGHT][IMG_WIDTH], FILE** fptr, char const
         fclose (*fptr);
 
         printf ("\nWrote image successfully to the file.\a");
-    }   
+    }
 }
-
-
-
-
-
