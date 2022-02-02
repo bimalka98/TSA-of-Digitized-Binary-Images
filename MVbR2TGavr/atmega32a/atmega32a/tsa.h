@@ -3,11 +3,11 @@ Paper Implementation:
 "Topological Structural Analysis of Digitized Binary Images by Border Following"
 by SATOSHI SUZUKI AND KEIICHI ABE
 
-Author          : Bimalka Piyaruwan 
+Author          : Bimalka Piyaruwan
 Date Created    : 2022/01/18
 Last Modified   : 2022/01/28
 
-Algorithms can be effectively used in component counting, shrinking, and 
+Algorithms can be effectively used in component counting, shrinking, and
 topological structural analysis of binary images, when a sequential digital computer is used.
 */
 
@@ -36,12 +36,12 @@ enum Direction{
 
 
 // declaring the fucntion to find the contours of the binary image
-struct Node* findContours (int binary_image[IMG_HEIGHT][IMG_WIDTH], int image_width, int image_height);
+struct Node* findContours (uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH], uint8_t image_width, uint8_t image_height);
 
 struct Coordinate findFirstNonZeroPixel (
     struct Coordinate ij,
     struct Coordinate i2j2,
-    int binaryimage[IMG_HEIGHT][IMG_WIDTH],
+    uint8_t binaryimage[IMG_HEIGHT][IMG_WIDTH],
     bool cloclwise,
     char examined[],
     struct Coordinate mooreneighborhood[]); // array is required only when traversing CCW(Counter Clock Wise) at step 3.4
@@ -49,9 +49,9 @@ struct Coordinate findFirstNonZeroPixel (
 struct Node* followBorder (
     struct Coordinate ij,
     struct Coordinate* i2j2,
-    int binary_image[IMG_HEIGHT][IMG_WIDTH],
-    int nbd,
-    int* lnbd);
+    uint8_t binary_image[IMG_HEIGHT][IMG_WIDTH],
+    uint8_t nbd,
+    uint8_t* lnbd);
 
 struct Coordinate getPreviouslyExaminedPixel (
     struct Coordinate centerpixel,
