@@ -62,7 +62,7 @@ ISR(TIMER1_OVF_vect)
 }
 
 
-int BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
+uint8_t BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -89,7 +89,6 @@ int main(void)
 	TIMSK  |= (1 << TOIE1);   // Timer/Counter1, Overflow Interrupt Enable
 	
 	
-	
 	sei(); // Enable Global Interrupts
 	TCNT1 = 0; // initialize counter to 0
 	
@@ -107,8 +106,8 @@ int main(void)
 	
 	// Data need to be in "char" data type to display through the LCD.
     // Define global variables to hold char data.
-    char *_line1txt1 = "Overflows";
-	char *_line2txt1 = "Ticks";
+    char *_line1txt1 = "Overflows,";
+	char *_line2txt1 = "Ticks,";
 	
 	// converting overflow count in to a stream of chars to display
 	int length = snprintf( NULL, 0, "%d",  OverflowCount);
