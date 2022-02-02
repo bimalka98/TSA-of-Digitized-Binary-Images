@@ -141,7 +141,7 @@ struct Node* followBorder (
     struct Coordinate ij, struct Coordinate* i2j2,
     short  binary_image[IMG_HEIGHT][IMG_WIDTH],
     short  nbd,
-    int *lnbd) {
+    short *lnbd) {
     printf ("\nFollowing the detected border...");
     // creating a linked list to store the pixels of the currently following border
     struct Node* _headnode = NULL;
@@ -180,9 +180,9 @@ struct Node* followBorder (
         //printf ("\nAbout to start following border using while true loop.");
 
         // Instead of a while true: use a counter to stop the infinite loop.
-        short  count = IMG_HEIGHT*IMG_WIDTH;
-        //while ( true ) 	{
-        while ( count >0 ) {
+        //short  count = IMG_HEIGHT*IMG_WIDTH;
+        while ( true ) 	{
+        //while ( count >0 ) {
 
             // appending the next pixel of the border
             //printf ("\nAppend next pixel to the list.");
@@ -231,7 +231,7 @@ struct Node* followBorder (
                         if ( binary_image[ij._x][ij._x] != 1 ) {
                             *lnbd = abs (binary_image[ij._x][ij._x]);
                         }
-                        //printf ("\nComing back to the starting point.");
+                        printf ("\nComing back to the starting point. Border following terminated.");
                         break;
 
                     }
@@ -250,7 +250,7 @@ struct Node* followBorder (
                 }
 
             }
-            count--;
+            //count--;
         }
     }
     return _headnode;
@@ -286,7 +286,7 @@ struct Node* findContours (short  binary_image[IMG_HEIGHT][IMG_WIDTH], short  im
         _lnbd = 1;
 
         for ( short  j = 1; j < image_width - 1; j++ ) {
-            printf ("\nCurrent Pixel: (%d, %d)", i, j);
+            
             if ( binary_image[i][j] != 0 ) {
 
                 bool _outerborder = false;
@@ -301,7 +301,8 @@ struct Node* findContours (short  binary_image[IMG_HEIGHT][IMG_WIDTH], short  im
                     _nbd++;
                     _i2j2._x = i;
                     _i2j2._y = j - 1;
-                    printf ("\nOuter border!");
+                    //printf ("\nCurrent Pixel: (%d, %d)", i, j);
+                    //printf ("\tOuter border!");
                 // Remove > sign from first comparison to avoid meeting holeborder critera will stuck the machine
                 } else if ( binary_image[i][j] >= 1 && binary_image[i][j + 1] == 0 ) {
                     // then decide that the pixel (i, j) is the border following
@@ -316,7 +317,8 @@ struct Node* findContours (short  binary_image[IMG_HEIGHT][IMG_WIDTH], short  im
                     if ( binary_image[i][j] > 1 ) {
                         _lnbd = binary_image[i][j];
                     }
-                    printf ("\nHole border!");
+                    //printf ("\nCurrent Pixel: (%d, %d)", i, j);
+                    //printf ("\tHole border!");
                 } else {
                     // (c) Otherwise, go to (4).
                     // ( 4 ) If fij != 1, then LNBD = abs(fij) and resume the raster scan from the pixel
@@ -325,7 +327,7 @@ struct Node* findContours (short  binary_image[IMG_HEIGHT][IMG_WIDTH], short  im
                     if ( binary_image[i][j] != 1 ) {
                         _lnbd = abs (binary_image[i][j]);
                     }
-                    printf ("Neither Outer nor hole!");
+                    //printf ("Neither Outer nor hole!");
                 }
                 // (2) Depending on the types of
                 // 1. the newly found border and
