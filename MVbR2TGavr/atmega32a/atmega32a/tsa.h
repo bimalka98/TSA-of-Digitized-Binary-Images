@@ -5,7 +5,7 @@ by SATOSHI SUZUKI AND KEIICHI ABE
 
 Author          : Bimalka Piyaruwan
 Date Created    : 2022/01/18
-Last Modified   : 2022/01/28
+Last Modified   : 2022/02/02
 
 Algorithms can be effectively used in component counting, shrinking, and
 topological structural analysis of binary images, when a sequential digital computer is used.
@@ -18,8 +18,8 @@ topological structural analysis of binary images, when a sequential digital comp
 #include "dsa.h"
 
 // defining parameters of the image
-#define IMG_HEIGHT 8
-#define IMG_WIDTH  12
+#define IMG_HEIGHT 32
+#define IMG_WIDTH  32
 
 // type definitiions
 enum Direction{

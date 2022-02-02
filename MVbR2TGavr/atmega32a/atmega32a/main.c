@@ -1,8 +1,9 @@
 /*
   * Interfacing a 16*2 LCD display through I2C
-  * Created   : 7/12/2020 3:44:42 PM
-  * Author    : Bimalka Piyaruwan Thalagala
-  * Github    : https://github.com/bimalka98
+  * Created			: 7/12/2020 3:44:42 PM
+  * Author			: Bimalka Piyaruwan Thalagala
+  * Github			: https://github.com/bimalka98
+  * Last Modified	: 02/02/2022
   
   *************************\Functional Description\***************************
   * In order to use the following code, you need to attach a
@@ -38,6 +39,7 @@
 // Include required custom header files
 #include "i2c_lcd.h"
 #include "i2cmaster.h"
+#include "image32.h"
 
 // global variables to be changed inside even in the ISR
 volatile unsigned int OverflowCount = 0;
@@ -61,7 +63,7 @@ ISR(TIMER1_OVF_vect)
 	TCNT1 = 0; // Resetting the counter to 1 at each overflow
 }
 
-
+/*
 uint8_t BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -71,7 +73,7 @@ uint8_t BinaryImage[IMG_HEIGHT][IMG_WIDTH] = {
 	{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+*/
 
 int main(void)
 {
@@ -89,20 +91,16 @@ int main(void)
 	TIMSK  |= (1 << TOIE1);   // Timer/Counter1, Overflow Interrupt Enable
 	
 	
+	//==================================================================================================
 	sei(); // Enable Global Interrupts
-	TCNT1 = 0; // initialize counter to 0
-	
+	TCNT1 = 0; // initialize counter to 0	
 	// your function goes here.
 	/* some function*/
-	struct Node* contours = findContours (BinaryImage, IMG_WIDTH, IMG_HEIGHT);
+	struct Node* contours = findContours (BinaryImage32, IMG_WIDTH, IMG_HEIGHT);
 	//_delay_ms(1000);
 	//cli ; // Disable Global Interrupts
 	ClockTicks = TCNT1;
-	
-	
-	
-	
-	
+	//==================================================================================================
 	
 	// Data need to be in "char" data type to display through the LCD.
     // Define global variables to hold char data.
