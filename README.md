@@ -31,4 +31,4 @@ I was able to implemet the algorithm upto the point where it can detect a contou
 |:-----:|:----|
 |MVbR2TG|Implementaion of the paper in pure C language using Visual Studio 2019|
 |MVbR2TGavr|Implementaion of the paper to run in an AVR microcontroller. This was not successful due to the very limited storage and the processing power of the AVR (Atmel ATMEGA32A), `uint8_t` branch consists of an alternate approach which ues `uint8_t` data type instead of `int` type.|
-|MVbR2TGpy|Includes random python scripts to 1. Generate test images and saves them in header files 2. Measure time it takes to run the `findcontour` function in OpenCV inorder to compare it with my algorithm 3. Visualize the processed images by the first algorithm (MVbR2TG)|
+|MVbR2TGpy|Includes random python scripts to <br>1. Generate test images and saves them in header files <br>2. Measure time it takes to run the `findcontour` function in OpenCV inorder to compare it with my algorithm <br>3. Visualize the processed images by the first algorithm (MVbR2TG)|
